@@ -6,15 +6,10 @@ type Constructor = {
 }
 
 export type Component = typeof Vue | ComponentOptions<Vue> | FunctionalComponentOptions;
-
-interface EsModuleComponent {
-  default: Component
-}
-
 export type AsyncComponent = (
   resolve: (component: Component) => void,
   reject: (reason?: any) => void
-) => Promise<Component | EsModuleComponent> | Component | void;
+) => Promise<Component> | Component | void;
 
 export interface ComponentOptions<V extends Vue> {
   data?: Object | ((this: V) => Object);
@@ -22,12 +17,11 @@ export interface ComponentOptions<V extends Vue> {
   propsData?: Object;
   computed?: { [key: string]: ((this: V) => any) | ComputedOptions<V> };
   methods?: { [key: string]: (this: V, ...args: any[]) => any };
-  watch?: { [key: string]: ({ handler: WatchHandler<V, any> } & WatchOptions) | WatchHandler<V, any> | string };
+  watch?: { [key: string]: ({ handler: WatchHandler<V> } & WatchOptions) | WatchHandler<V> | string };
 
   el?: Element | String;
   template?: string;
   render?(this: V, createElement: CreateElement): VNode;
-  renderError?: (h: () => VNode, err: Error) => VNode;
   staticRenderFns?: ((createElement: CreateElement) => VNode)[];
 
   beforeCreate?(this: V): void;
@@ -46,29 +40,18 @@ export interface ComponentOptions<V extends Vue> {
   transitions?: { [key: string]: Object };
   filters?: { [key: string]: Function };
 
-  provide?: Object | (() => Object);
-  inject?: { [key: string]: string | symbol } | string[];
-
-  model?: {
-    prop?: string;
-    event?: string;
-  };
-
   parent?: Vue;
   mixins?: (ComponentOptions<Vue> | typeof Vue)[];
   name?: string;
   extends?: ComponentOptions<Vue> | typeof Vue;
   delimiters?: [string, string];
-  comments?: boolean;
-  inheritAttrs?: boolean;
 }
 
 export interface FunctionalComponentOptions {
-  name?: string;
   props?: string[] | { [key: string]: PropOptions | Constructor | Constructor[] };
-  inject?: { [key: string]: string | symbol } | string[];
   functional: boolean;
-  render(this: never, createElement: CreateElement, context: RenderContext): VNode | void;
+  render(this: never, createElement: CreateElement, context: RenderContext): VNode;
+  name?: string;
 }
 
 export interface RenderContext {
@@ -77,7 +60,6 @@ export interface RenderContext {
   slots(): any;
   data: VNodeData;
   parent: Vue;
-  injections: any
 }
 
 export interface PropOptions {
@@ -93,7 +75,7 @@ export interface ComputedOptions<V> {
   cache?: boolean;
 }
 
-export type WatchHandler<V, T> = (this: V, val: T, oldVal: T) => void;
+export type WatchHandler<V> = (this: V, val: any, oldVal: any) => void;
 
 export interface WatchOptions {
   deep?: boolean;

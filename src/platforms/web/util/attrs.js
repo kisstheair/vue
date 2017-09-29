@@ -2,15 +2,11 @@
 
 import { makeMap } from 'shared/util'
 
-// these are reserved for web because they are directly compiled away
-// during template compilation
-export const isReservedAttr = makeMap('style,class')
-
 // attributes that should be using props for binding
-const acceptValue = makeMap('input,textarea,option,select,progress')
-export const mustUseProp = (tag: string, type: ?string, attr: string): boolean => {
+const acceptValue = makeMap('input,textarea,option,select')
+export const mustUseProp = (tag: string, attr: string): boolean => {
   return (
-    (attr === 'value' && acceptValue(tag)) && type !== 'button' ||
+    (attr === 'value' && acceptValue(tag)) ||
     (attr === 'selected' && tag === 'option') ||
     (attr === 'checked' && tag === 'input') ||
     (attr === 'muted' && tag === 'video')

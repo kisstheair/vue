@@ -12,13 +12,11 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "Releasing $VERSION ..."
 
-  if [[ -z $SKIP_TESTS ]]; then
-    npm run lint
-    npm run flow
-    npm run test:cover
-    npm run test:e2e
-    npm run test:ssr
-  fi
+  npm run lint
+  npm run flow
+  npm run test:cover
+  npm run test:e2e
+  npm run test:ssr
 
   if [[ -z $SKIP_SAUCE ]]; then
     export SAUCE_BUILD_ID=$VERSION:`date +"%s"`
@@ -31,40 +29,21 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   # update packages
   cd packages/vue-template-compiler
   npm version $VERSION
-  if [[ -z $RELEASE_TAG ]]; then
-    npm publish
-  else
-    npm publish --tag $RELEASE_TAG
-  fi
+  npm publish
   cd -
 
   cd packages/vue-server-renderer
   npm version $VERSION
-  if [[ -z $RELEASE_TAG ]]; then
-    npm publish
-  else
-    npm publish --tag $RELEASE_TAG
-  fi
+  npm publish
   cd -
 
   # commit
   git add -A
-  git add -f \
-    dist/*.js \
-    packages/vue-server-renderer/basic.js \
-    packages/vue-server-renderer/build.js \
-    packages/vue-server-renderer/server-plugin.js \
-    packages/vue-server-renderer/client-plugin.js \
-    packages/vue-template-compiler/build.js
-  git commit -m "build: build $VERSION"
-  npm version $VERSION --message "build: release $VERSION"
+  git commit -m "[build] $VERSION"
+  npm version $VERSION --message "[release] $VERSION"
 
   # publish
   git push origin refs/tags/v$VERSION
   git push
-  if [[ -z $RELEASE_TAG ]]; then
-    npm publish
-  else
-    npm publish --tag $RELEASE_TAG
-  fi
+  npm publish
 fi

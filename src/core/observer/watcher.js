@@ -1,18 +1,15 @@
 /* @flow */
 
-import { queueWatcher } from './scheduler'
+import config from '../config'
 import Dep, { pushTarget, popTarget } from './dep'
-
+import { queueWatcher } from './scheduler'
 import {
   warn,
   remove,
   isObject,
   parsePath,
-  _Set as Set,
-  handleError
+  _Set as Set
 } from '../util/index'
-
-import type { ISet } from '../util/index'
 
 let uid = 0
 
@@ -34,8 +31,8 @@ export default class Watcher {
   active: boolean;
   deps: Array<Dep>;
   newDeps: Array<Dep>;
-  depIds: ISet;
-  newDepIds: ISet;
+  depIds: Set;
+  newDepIds: Set;
   getter: Function;
   value: any;
 
@@ -92,25 +89,14 @@ export default class Watcher {
    */
   get () {
     pushTarget(this)
-    let value
-    const vm = this.vm
-    try {
-      value = this.getter.call(vm, vm)
-    } catch (e) {
-      if (this.user) {
-        handleError(e, vm, `getter for watcher "${this.expression}"`)
-      } else {
-        throw e
-      }
-    } finally {
-      // "touch" every property so they are all tracked as
-      // dependencies for deep watching
-      if (this.deep) {
-        traverse(value)
-      }
-      popTarget()
-      this.cleanupDeps()
+    const value = this.getter.call(this.vm, this.vm)
+    // "touch" every property so they are all tracked as
+    // dependencies for deep watching
+    if (this.deep) {
+      traverse(value)
     }
+    popTarget()
+    this.cleanupDeps()
     return value
   }
 
@@ -186,7 +172,16 @@ export default class Watcher {
           try {
             this.cb.call(this.vm, value, oldValue)
           } catch (e) {
-            handleError(e, this.vm, `callback for watcher "${this.expression}"`)
+            /* istanbul ignore else */
+            if (config.errorHandler) {
+              config.errorHandler.call(null, e, this.vm)
+            } else {
+              process.env.NODE_ENV !== 'production' && warn(
+                `Error in watcher "${this.expression}"`,
+                this.vm
+              )
+              throw e
+            }
           }
         } else {
           this.cb.call(this.vm, value, oldValue)
@@ -221,8 +216,9 @@ export default class Watcher {
     if (this.active) {
       // remove self from vm's watcher list
       // this is a somewhat expensive operation so we skip it
-      // if the vm is being destroyed.
-      if (!this.vm._isBeingDestroyed) {
+      // if the vm is being destroyed or is performing a v-for
+      // re-render (the watcher list is then filtered by v-for).
+      if (!this.vm._isBeingDestroyed && !this.vm._vForRemoving) {
         remove(this.vm._watchers, this)
       }
       let i = this.deps.length
@@ -245,7 +241,7 @@ function traverse (val: any) {
   _traverse(val, seenObjects)
 }
 
-function _traverse (val: any, seen: ISet) {
+function _traverse (val: any, seen: Set) {
   let i, keys
   const isA = Array.isArray(val)
   if ((!isA && !isObject(val)) || !Object.isExtensible(val)) {
