@@ -18,7 +18,7 @@ import {
  * how to merge a parent option value and a child option
  * value into the final value.
  */
-const strats = config.optionMergeStrategies
+const strats = config.optionMergeStrategies           // strats策略   == 选项融合策略。是一个对象{key，function}用来配置 怎么融合的。
 
 /**
  * Options with restrictions
@@ -36,7 +36,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 /**
- * Helper that recursively merges two data objects together.
+ * Helper that recursively merges two data objects together.  递归的  融合两个对象，并返回
  */
 function mergeData (to: Object, from: ?Object): Object {
   if (!from) return to
@@ -110,7 +110,7 @@ strats.data = function (
 }
 
 /**
- * Hooks and param attributes are merged as arrays.
+ * Hooks and param attributes are merged as arrays.  钩子和param属性合并为数组。
  */
 function mergeHook (
   parentVal: ?Array<Function>,
@@ -125,14 +125,14 @@ function mergeHook (
     : parentVal
 }
 
-config._lifecycleHooks.forEach(hook => {
+config._lifecycleHooks.forEach(hook => {        // 把钩子函数数组 挂载到 策略上
   strats[hook] = mergeHook
 })
 
 /**
  * Assets
- *
- * When a vm is present (instance creation), we need to do
+ * mergeAssets 合并资产
+ * When a vm is present (instance creation), we need to do  当一个vm出现时(实例创建)，我们需要做 构造函数选项，实例选项，父选项之间的三方合并
  * a three-way merge between constructor options, instance
  * options and parent options.
  */
@@ -150,8 +150,9 @@ config._assetTypes.forEach(function (type) {
 /**
  * Watchers.
  *
- * Watchers hashes should not overwrite one
- * another, so we merge them as arrays.
+ * Watchers hashes should not overwrite one another,
+ * so we merge them as arrays.                        观察者哈希不应该覆盖另一个，所以我们将它们合并为数组。
+ *
  */
 strats.watch = function (parentVal: ?Object, childVal: ?Object): ?Object {
   /* istanbul ignore if */
@@ -173,7 +174,7 @@ strats.watch = function (parentVal: ?Object, childVal: ?Object): ?Object {
 }
 
 /**
- * Other object hashes.
+ * Other object hashes.  其他对象散列
  */
 strats.props =
 strats.methods =
@@ -187,7 +188,7 @@ strats.computed = function (parentVal: ?Object, childVal: ?Object): ?Object {
 }
 
 /**
- * Default strategy.
+ * Default strategy.  默认策略
  */
 const defaultStrat = function (parentVal: any, childVal: any): any {
   return childVal === undefined
@@ -196,7 +197,7 @@ const defaultStrat = function (parentVal: any, childVal: any): any {
 }
 
 /**
- * Validate component names
+ * Validate component names  验证组件名称
  */
 function checkComponents (options: Object) {
   for (const key in options.components) {
@@ -211,7 +212,7 @@ function checkComponents (options: Object) {
 }
 
 /**
- * Ensure all props option syntax are normalized into the
+ * Ensure all props option syntax are normalized into the  确保所有的支持选项语法都被规范化为 对象格式
  * Object-based format.
  */
 function normalizeProps (options: Object) {
@@ -243,7 +244,7 @@ function normalizeProps (options: Object) {
 }
 
 /**
- * Normalize raw function directives into object format.
+ * Normalize raw function directives into object format.    将原始的函数指令规范化为对象格式。
  */
 function normalizeDirectives (options: Object) {
   const dirs = options.directives
@@ -259,7 +260,7 @@ function normalizeDirectives (options: Object) {
 
 /**
  * Merge two option objects into a new one.
- * Core utility used in both instantiation and inheritance.
+ * Core utility used in both instantiation and inheritance.    用于实例化和继承的  核心程序
  */
 export function mergeOptions (
   parent: Object,

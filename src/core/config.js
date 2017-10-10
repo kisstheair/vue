@@ -2,7 +2,7 @@
 
 import { no, noop, identity } from 'shared/util'
 
-export type Config = {
+export type Config = {                              //导出 Vue的内部使用的配置对象，  有2个  Config 是类型的，  config 是实际的。
   // user
   optionMergeStrategies: { [key: string]: Function };
   silent: boolean;
@@ -26,7 +26,7 @@ const config: Config = {
   /**
    * Option merge strategies (used in core/util/options)
    */
-  optionMergeStrategies: Object.create(null),
+  optionMergeStrategies: Object.create(null),             //选项融合策略。是一个对象{key，function}用来配置 怎么融合的。
 
   /**
    * Whether to suppress warnings.
@@ -82,7 +82,7 @@ const config: Config = {
   mustUseProp: no,
 
   /**
-   * List of asset types that a component can own.
+   * List of asset types that a component can own.  组件可以成为的 类型  列表
    */
   _assetTypes: [
     'component',

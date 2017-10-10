@@ -23,10 +23,10 @@ export function initMixin (Vue: Class<Component>) {
       // internal component options needs special treatment.
       initInternalComponent(vm, options)
     } else {
-      vm.$options = mergeOptions(
-        resolveConstructorOptions(vm.constructor),
-        options || {},
-        vm
+      vm.$options = mergeOptions(                              //第一步要做的是 使用策略对象合并参数选项。 el 选项会使用 defaultStrat 默认策略函数处理，，data 选项则会使用 strats.data 策略函数处理
+        resolveConstructorOptions(vm.constructor),           // Vue.options   （如果定义了super可能会 对options进行修改）
+        options || {},                                        //  options        是我们调用Vue传入的options
+        vm                                                    // Vue.prototype == this
       )
     }
     /* istanbul ignore else */
@@ -83,3 +83,52 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {      //传�
   }
   return options
 }
+
+
+
+/*
+* // 在 Vue.prototype._init 中添加的属性 		**********************************************************
+     this._uid = uid++
+     this._isVue = true
+     this.$options = {
+       components,
+       directives,
+       filters,
+       _base,
+       el,
+       data: mergedInstanceDataFn()
+     }
+     this._renderProxy = this
+     this._self = this
+
+// 在 initLifecycle 中添加的属性		**********************************************************
+     this.$parent = parent
+     this.$root = parent ? parent.$root : this
+
+     this.$children = []
+     this.$refs = {}
+
+     this._watcher = null
+     this._inactive = false
+     this._isMounted = false
+     this._isDestroyed = false
+     this._isBeingDestroyed = false
+
+// 在 initEvents	 中添加的属性	 	**********************************************************
+     this._events = {}
+     this._updateListeners = function(){}
+
+// 在 initState 中添加的属性		**********************************************************
+     this._watchers = []
+// initData
+    this._data
+
+// 在 initRender	 中添加的属性 	**********************************************************
+     this.$vnode = null // the placeholder node in parent tree
+     this._vnode = null // the root of the child tree
+     this._staticTrees = null
+     this.$slots
+     this.$scopedSlots
+     this._c
+     this.$createElement
+* */
