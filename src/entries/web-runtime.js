@@ -15,13 +15,13 @@ import {
   mustUseProp
 } from 'web/util/index'
 
-// install platform specific utils
+// install platform specific utils                 安装平台特定的工具
 Vue.config.isUnknownElement = isUnknownElement
 Vue.config.isReservedTag = isReservedTag
 Vue.config.getTagNamespace = getTagNamespace
 Vue.config.mustUseProp = mustUseProp
 
-// install platform runtime directives & components
+// install platform runtime directives & components    安装平台特定的 指令 和 组件
 extend(Vue.options.directives, platformDirectives)
 extend(Vue.options.components, platformComponents)
 

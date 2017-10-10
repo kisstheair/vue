@@ -47,7 +47,7 @@ const builds = {
   },
   // Runtime+compiler development build (Browser)
   'web-full-dev': {
-    entry: path.resolve(__dirname, '../src/entries/web-runtime-with-compiler.js'),
+    entry: path.resolve(__dirname, '../src/entries/web-runtime-with-compiler.js'), //  这个就是生产 vue.js的入口文件
     dest: path.resolve(__dirname, '../dist/vue.js'),
     format: 'umd',
     env: 'development',

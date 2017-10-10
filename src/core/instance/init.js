@@ -10,14 +10,14 @@ import { mergeOptions } from '../util/index'
 let uid = 0
 
 export function initMixin (Vue: Class<Component>) {
-  Vue.prototype._init = function (options?: Object) {
-    const vm: Component = this
+  Vue.prototype._init = function (options?: Object) {          // vue初始化  执行的第一个函数
+    const vm: Component = this                                //这里的this  应该是指的是Vue.prototype，  那么  vm = Vue.prototype
     // a uid
     vm._uid = uid++
     // a flag to avoid this being observed
     vm._isVue = true
     // merge options
-    if (options && options._isComponent) {
+    if (options && options._isComponent) {                     // 判断有没有已经使用过了_isComponent这个属性，因为内部要使用 ，怕被占用了
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
@@ -63,7 +63,7 @@ function initInternalComponent (vm: Component, options: InternalComponentOptions
   }
 }
 
-export function resolveConstructorOptions (Ctor: Class<Component>) {
+export function resolveConstructorOptions (Ctor: Class<Component>) {      //传入的是Vue
   let options = Ctor.options
   if (Ctor.super) {
     const superOptions = Ctor.super.options
