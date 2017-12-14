@@ -1,5 +1,5 @@
 /* @flow */
-/* globals MutationObserver */
+/* globals MutationObserver */    // env  应该是environment 环境的缩写，  应该是检测全局环境，平台的 属性或者函数。
 
 import { noop } from 'shared/util'
 
@@ -15,8 +15,8 @@ export const isEdge = UA && UA.indexOf('edge/') > 0
 export const isAndroid = UA && UA.indexOf('android') > 0
 export const isIOS = UA && /iphone|ipad|ipod|ios/.test(UA)
 
-// this needs to be lazy-evaled because vue may be required before
-// vue-server-renderer can set VUE_ENV
+// this needs to be lazy-evaled because vue may be required before   这需要延迟，因为可能 在 vue-server-renderer可以设置VUE_ENV 之前 需要vue
+// vue-server-renderer can set VUE_ENV                               判断 vue运行在浏览器中 还是在服务器中
 let _isServer
 export const isServerRendering = () => {
   if (_isServer === undefined) {
@@ -41,7 +41,7 @@ function isNative (Ctor: Function): boolean {
 }
 
 /**
- * Defer a task to execute it asynchronously.
+ * Defer a task to execute it asynchronously  .             延迟执行异步执行的任务
  */
 export const nextTick = (function () {
   const callbacks = []

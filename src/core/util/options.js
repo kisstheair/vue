@@ -1,4 +1,4 @@
-/* @flow */
+/* @flow */       //   如何合并一个父选项值和一个子选项  的 一些属性和函数。
 
 import Vue from '../instance/index'
 import config from '../config'
@@ -14,11 +14,11 @@ import {
 } from 'shared/util'
 
 /**
- * Option overwriting strategies are functions that handle
+ * Option overwriting strategies are functions that handle      // 选项覆盖策略是 处理如何合并一个父选项值和一个子选项 的函数
  * how to merge a parent option value and a child option
  * value into the final value.
  */
-const strats = config.optionMergeStrategies           // strats策略   == 选项融合策略。是一个对象{key，function}用来配置 怎么融合的。
+const strats = config.optionMergeStrategies                    // strats策略   == 选项融合策略。是一个对象{key，function}用来配置 怎么融合的。
 
 /**
  * Options with restrictions
@@ -36,7 +36,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 /**
- * Helper that recursively merges two data objects together.  递归的  融合两个对象，并返回
+ * Helper that recursively merges two data objects together.    // 递归的  融合两个对象，并返回
  */
 function mergeData (to: Object, from: ?Object): Object {
   if (!from) return to
@@ -46,9 +46,9 @@ function mergeData (to: Object, from: ?Object): Object {
     key = keys[i]
     toVal = to[key]
     fromVal = from[key]
-    if (!hasOwn(to, key)) {
+    if (!hasOwn(to, key)) {                                           // 如果本来就有这个属性了，那就不覆盖，如果本来没有这个属性， set一下。
       set(to, key, fromVal)
-    } else if (isPlainObject(toVal) && isPlainObject(fromVal)) {
+    } else if (isPlainObject(toVal) && isPlainObject(fromVal)) {     // 如果是2个对象的话 递归一下吧
       mergeData(toVal, fromVal)
     }
   }
