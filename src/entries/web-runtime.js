@@ -56,3 +56,40 @@ setTimeout(() => {
 }, 0)
 
 export default Vue
+
+
+
+// runtime.js 文件主要做了三件事儿：
+//
+//      1、覆盖 Vue.config 的属性，将其设置为平台特有的一些方法
+//      2、Vue.options.directives 和 Vue.options.components 安装平台特有的指令和组件
+//      3、在 Vue.prototype 上定义 __patch__ 和 $mount
+
+
+
+
+//  经过这个文件处理之后 Vue 天加的如下
+
+      // // 安装平台特定的utils
+      // Vue.config.isUnknownElement = isUnknownElement
+      // Vue.config.isReservedTag = isReservedTag
+      // Vue.config.getTagNamespace = getTagNamespace
+      // Vue.config.mustUseProp = mustUseProp
+      // // 安装平台特定的 指令 和 组件
+      // Vue.options = {
+      //     components: {
+      //         KeepAlive,
+      //         Transition,
+      //         TransitionGroup
+      //     },
+      //     directives: {
+      //         model,
+      //         show
+      //     },
+      //     filters: {},
+      //     _base: Vue
+      // }
+      // Vue.prototype.__patch__
+      // Vue.prototype.$mount
+
+

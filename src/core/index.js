@@ -2,15 +2,15 @@ import Vue from './instance/index'
 import { initGlobalAPI } from './global-api/index'
 import { isServerRendering } from 'core/util/env'
 
-initGlobalAPI(Vue)                   //在Vue构造函数上添加静态属性和方法。
+initGlobalAPI(Vue)                                                //在Vue构造函数上添加静态属性和方法。
 
-Object.defineProperty(Vue.prototype, '$isServer', {
+Object.defineProperty(Vue.prototype, '$isServer', {            // Vue.prototype 上挂载了 $isServer
   get: isServerRendering
 })
 
-Vue.version = '__VERSION__'
+Vue.version = '__VERSION__'                                 //在 Vue 上挂载了 version 属性。
 
-export default Vue              //到这一步才是真的导出Vue，前面的都是生产文件代码。
+export default Vue                                           //到这一步才是真的导出Vue，前面的都是生产文件代码。
 
 
 

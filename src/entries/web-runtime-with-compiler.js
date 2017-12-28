@@ -10,7 +10,7 @@ const idToTemplate = cached(id => {
   const el = query(id)
   return el && el.innerHTML
 })
-                                                   //做了2件事  1.覆盖$mount函数  2.挂载compile函数（作用是将template编译为render函数）
+                                                   //做了2件事  1.覆盖$mount函数      2.挂载compile函数（作用是将template编译为render函数）
 const mount = Vue.prototype.$mount
 Vue.prototype.$mount = function (
   el?: string | Element,

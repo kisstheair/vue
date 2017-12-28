@@ -11,7 +11,7 @@ let uid = 0
 
 export function initMixin (Vue: Class<Component>) {
   Vue.prototype._init = function (options?: Object) {          // vue初始化  执行的第一个函数
-    const vm: Component = this                                //这里的this  应该是指的是Vue.prototype，  那么  vm = Vue.prototype
+    const vm: Component = this                                //这里的this  应该是指的是Vue的实例对象，  那么  vm = Vue 的一个实例
     // a uid
     vm._uid = uid++
     // a flag to avoid this being observed
