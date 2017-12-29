@@ -8,15 +8,15 @@ declare interface Component {
   static options: Object;
   // extend
   static extend: (options: Object) => Function;
-  static superOptions: Object;
-  static extendOptions: Object;
-  static super: Class<Component>;
+  static superOptions: Object;                                                // =super.options
+  static extendOptions: Object;                                               // 改写里面的继承内容
+  static super: Class<Component>;                                              // 如果super存在了，此时的Vue就要去继承super的一些东西
   // assets
   static directive: (id: string, def?: Function | Object) => Function | Object | void;
   static component: (id: string, def?: Class<Component> | Object) => Class<Component>;
   static filter: (id: string, def?: Function) => Function | void;
 
-  // public properties
+  // public properties                                                                    每个实例对象都有一份，
   $el: any; // so that we can attach __vue__ to it
   $data: Object;
   $options: ComponentOptions;
@@ -43,7 +43,18 @@ declare interface Component {
   $nextTick: (fn: Function) => void;
   $createElement: (tag?: string | Component, data?: Object, children?: VNodeChildren) => VNode;
 
-  // private properties
+
+
+
+
+
+
+
+
+
+
+
+  // private properties                     下面的都是私有方法和属性  直供内部使用不对外公开
   _uid: number;
   _isVue: true;
   _self: Component;
