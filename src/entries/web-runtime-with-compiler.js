@@ -11,12 +11,12 @@ const idToTemplate = cached(id => {
   return el && el.innerHTML
 })
                                                    //做了2件事  1.覆盖$mount函数      2.挂载compile函数（作用是将template编译为render函数）
-const mount = Vue.prototype.$mount
-Vue.prototype.$mount = function (
+const mount = Vue.prototype.$mount               // 缓存了来自 web-runtime.js 的 $mount 方法
+Vue.prototype.$mount = function (                // 重写 $mount 方法
   el?: string | Element,
   hydrating?: boolean
 ): Component {
-  el = el && query(el)
+  el = el && query(el)                            // 根据 el 获取相应的DOM元素
 
   /* istanbul ignore if */
   if (el === document.body || el === document.documentElement) {
@@ -28,9 +28,9 @@ Vue.prototype.$mount = function (
 
   const options = this.$options
   // resolve template/el and convert to render function
-  if (!options.render) {
-    let template = options.template
-    if (template) {
+  if (!options.render) {                                     // 如果我们没有写 render 选项，那么就尝试将 template 或者 el 转化为 render 函数
+    let template = options.template                          //  这里最主要的目的就是生成render函数，如果没有render 那就查看有没有template----根据compileToFunctions  把模板转化为render
+    if (template) {                                          //                                    如果template模板都没有  那么查看有没有 el 选项，根据el 生成template = getOuterHTML(el)) 再去使用 compileToFunctions
       if (typeof template === 'string') {
         if (template.charAt(0) === '#') {
           template = idToTemplate(template)
@@ -59,11 +59,11 @@ Vue.prototype.$mount = function (
         shouldDecodeNewlines,
         delimiters: options.delimiters
       }, this)
-      options.render = render
+      options.render = render                                      // 将编译成的 render 函数挂载到 this.$options 属性下
       options.staticRenderFns = staticRenderFns
     }
   }
-  return mount.call(this, el, hydrating)
+  return mount.call(this, el, hydrating)                            // 调用已经缓存下来的 web-runtime.js 文件中的 $mount 方法
 }
 
 /**

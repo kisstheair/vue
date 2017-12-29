@@ -78,7 +78,7 @@ export function renderMixin (Vue: Class<Component>) {
     // render self
     let vnode
     try {
-      vnode = render.call(vm._renderProxy, vm.$createElement)
+      vnode = render.call(vm._renderProxy, vm.$createElement)                     // 创建虚拟DOM对象
     } catch (e) {
       /* istanbul ignore else */
       if (config.errorHandler) {

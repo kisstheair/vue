@@ -58,7 +58,7 @@ function mergeData (to: Object, from: ?Object): Object {
 /**
  * Data
  */
-strats.data = function (
+strats.data = function (                                // data 选项则会使用 strats.data 策略函数处理
   parentVal: any,
   childVal: any,
   vm?: Component
@@ -110,7 +110,7 @@ strats.data = function (
 }
 
 /**
- * Hooks and param attributes are merged as arrays.  钩子和param属性合并为数组。
+ * Hooks and param attributes are merged as arrays.  钩子和param属性合并为数组。  生命周期选项的合并策略函数
  */
 function mergeHook (
   parentVal: ?Array<Function>,
@@ -131,10 +131,10 @@ config._lifecycleHooks.forEach(hook => {        // 把钩子函数数组 挂载�
 
 /**
  * Assets
- * mergeAssets 合并资产
+ * mergeAssets 合并资产                                      指令(directives)、组件(components)、过滤器(filters)等选项的合并
  * When a vm is present (instance creation), we need to do  当一个vm出现时(实例创建)，我们需要做 构造函数选项，实例选项，父选项之间的三方合并
  * a three-way merge between constructor options, instance
- * options and parent options.
+ * options and parent options.                              指令(directives)、组件(components)、过滤器(filters)等选项的合并策略函数为 mergeAssets。
  */
 function mergeAssets (parentVal: ?Object, childVal: ?Object): Object {
   const res = Object.create(parentVal || null)
@@ -262,7 +262,7 @@ function normalizeDirectives (options: Object) {
  * Merge two option objects into a new one.
  * Core utility used in both instantiation and inheritance.    用于实例化和继承的  核心程序
  */
-export function mergeOptions (
+export function mergeOptions (                 //mergeOptions根据融合策略把各个属性都融合到一起。  strats是融合策略的数组，data怎么融合  指令怎么融合，钩子怎么融合，都保存在strats数组中
   parent: Object,
   child: Object,
   vm?: Component

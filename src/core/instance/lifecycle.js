@@ -60,14 +60,14 @@ export function lifecycleMixin (Vue: Class<Component>) {
         }
       }
     }
-    callHook(vm, 'beforeMount')
-    vm._watcher = new Watcher(vm, () => {
+    callHook(vm, 'beforeMount')                            // 触发 beforeMount 生命周期钩子
+    vm._watcher = new Watcher(vm, () => {                  // Watcher收集变量，    vm._render()渲染成虚拟DOM     vm._update将虚拟DOM中的最后一步：patch到DOcument中
       vm._update(vm._render(), hydrating)
     }, noop)
     hydrating = false
     // manually mounted instance, call mounted on self
     // mounted is called for render-created child components in its inserted hook
-    if (vm.$vnode == null) {
+    if (vm.$vnode == null) {                              // 如果是第一次mount则触发 mounted 生命周期钩子
       vm._isMounted = true
       callHook(vm, 'mounted')
     }

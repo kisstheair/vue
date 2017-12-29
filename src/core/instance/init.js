@@ -35,7 +35,7 @@ export function initMixin (Vue: Class<Component>) {
     } else {
       vm._renderProxy = vm
     }
-    // expose real self
+    // expose real self                            这个目录中的各个模块，都导出2部分 Minxin 和init在构建的时候， 都minxin过了，  在初始化的时候  在这里执行了初始化。
     vm._self = vm
     initLifecycle(vm)
     initEvents(vm)
