@@ -40,7 +40,7 @@ export function initRender (vm: Component) {
   // normalization is always applied for the public version, used in
   // user-written render functions.
   vm.$createElement = (a, b, c, d) => createElement(vm, a, b, c, d, true)
-  if (vm.$options.el) {
+  if (vm.$options.el) {                                                            // 只有在el存在的情况下，才去mount，  主要方法是vm.$mount(vm.$options.el)，如果没有el那么就不去mount，   初始化的时候可以不调用， 可以在以后中手动调用vm.$mount()
     vm.$mount(vm.$options.el)
   }
 }

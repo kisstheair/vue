@@ -40,7 +40,7 @@ export class Observer {
     this.value = value
     this.dep = new Dep()
     this.vmCount = 0
-    def(value, '__ob__', this)
+    def(value, '__ob__', this)           // 给value对象添加一个属性 value.__ob__ = Observer的实例
     if (Array.isArray(value)) {
       const augment = hasProto
         ? protoAugment

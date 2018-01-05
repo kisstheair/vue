@@ -338,34 +338,44 @@ export function resolveAsset (
 }
 
 
-/*
 
 
 
- 1、Vue实例常用属性
-     （1）数据
-           data:Vue 实例的数据对象
-           components：Vue实例配置局部注册组件
-     （2）类方法
-           computed:计算属性
-           watch：侦听属性
-           filters：过滤器
-           methods:Vue实例方法
-           render：渲染函数，创建虚拟DOM
-     （3）生命周期
-         created：在实例创建完成后被立即调用，完成初始化操作
-         mounted：el挂载到Vue实例上了，开始业务逻辑操作
-         beforeDestroy：实例销毁之前调用
- 2、Vue组件
-         props:用于接收来自父组件的数据
-         template：组件模板
+/*strats 是一个对象{key:function}-------------------- 融合策略 --------------------------------------------------包含的内容如下。
+*
+     el:'#demo',                                      // 有关DOM的，找到document中的基点，并渲染成虚拟DOM放入
+     template:"",
+
+     data: {},                                          // 有关数据的，data是响应数据， prop从父传递的数据  propsData创建实例传递的属性，watch监视，computed计算属性，，，，
+     props:{},
+     propsData:{},
+     computed: {fullName: function () { }},
+     methods: {},
+     watch:{},
+
+     directives:{},                                    // 有关资源的， 子组件， 新定义的指令。
+     filters:{},
+     components:{},
+
+     beforeCreate:function () {},                     // 钩子函数
+     created:function () {},
+     beforeMount:function () {},
+     mounted:function () {},
+     beforeUpdate:function () {},
+     updated:function () {},
+     beforeDestroy:function () {},
+     destroyed:function () {},
+     activated:function () {},
+     deactivated:function () {},
+* */
 
 
 
 
- */
 
-// var vm = new Vue({                                    //Vue的属性主要分为下面几类
+
+
+// var vm = new Vue({                                    //----------------------------------------------------------Vue的属性主要分为下面几类
 //
 //     el:'#demo',                                      // 有关DOM的，找到document中的基点，并渲染成虚拟DOM放入
 //     template:"",
