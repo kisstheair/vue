@@ -20,7 +20,7 @@ export default class Dep {
   }
 
   addSub (sub: Watcher) {
-    this.subs.push(sub)
+    this.subs.push(sub)            //收集 watcher
   }
 
   removeSub (sub: Watcher) {
@@ -29,7 +29,7 @@ export default class Dep {
 
   depend () {
     if (Dep.target) {
-      Dep.target.addDep(this)
+      Dep.target.addDep(this)     //建立依赖关系， 将本dep 放入 watcher中
     }
   }
 

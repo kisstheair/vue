@@ -152,7 +152,7 @@ export function defineReactive (
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
       if (Dep.target) {
-        dep.depend()
+        dep.depend()                                                      // 建立相互依赖关系
         if (childOb) {
           childOb.dep.depend()
         }

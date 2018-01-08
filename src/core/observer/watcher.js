@@ -85,7 +85,7 @@ export default class Watcher {
   }
 
   /**
-   * Evaluate the getter, and re-collect dependencies.
+   * Evaluate the getter, and re-collect dependencies.    评估吸气剂，并重新收集依赖项
    */
   get () {
     pushTarget(this)
@@ -101,7 +101,7 @@ export default class Watcher {
   }
 
   /**
-   * Add a dependency to this directive.
+   * Add a dependency to this directive.      把dep放入本watcher中，
    */
   addDep (dep: Dep) {
     const id = dep.id
