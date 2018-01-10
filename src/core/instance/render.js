@@ -56,7 +56,7 @@ export function renderMixin (Vue: Class<Component>) {
       render,
       staticRenderFns,
       _parentVnode
-    } = vm.$options
+    } = vm.$options                                                               // 解构出 $options 中的 render 函数
 
     if (vm._isMounted) {
       // clone slot nodes on re-renders
@@ -78,7 +78,7 @@ export function renderMixin (Vue: Class<Component>) {
     // render self
     let vnode
     try {
-      vnode = render.call(vm._renderProxy, vm.$createElement)                     // 创建虚拟DOM对象
+      vnode = render.call(vm._renderProxy, vm.$createElement)                     // render执行之后，创建虚拟DOM对象   Vue提供了 render 选项，作为 template 的代替方案，
     } catch (e) {
       /* istanbul ignore else */
       if (config.errorHandler) {

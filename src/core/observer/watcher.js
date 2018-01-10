@@ -53,22 +53,22 @@ export default class Watcher {
     } else {
       this.deep = this.user = this.lazy = this.sync = false
     }
-    this.cb = cb
-    this.id = ++uid // uid for batching
-    this.active = true
-    this.dirty = this.lazy // for lazy watchers
-    this.deps = []
-    this.newDeps = []
-    this.depIds = new Set()
-    this.newDepIds = new Set()
-    this.expression = process.env.NODE_ENV !== 'production'
+    this.cb = cb                                                      //回调
+    this.id = ++uid // uid for batching                               //每一个watcher 都有一个id
+    this.active = true                                               // 是否激活   也就是是否运行callback的标识
+    this.dirty = this.lazy // for lazy watchers                         是不是暂时先不触发回调的
+    this.deps = []                                                    //都有那个收集器  收集了这个watcher
+    this.newDeps = []                                                 //新添加的
+    this.depIds = new Set()                                           //做缓存用的吗？
+    this.newDepIds = new Set()                                       //
+    this.expression = process.env.NODE_ENV !== 'production'        //
       ? expOrFn.toString()
       : ''
     // parse expression for getter
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
-      this.getter = parsePath(expOrFn)
+      this.getter = parsePath(expOrFn)                              //  expOrFn可能是a.b.c    返回的是一个可以深层次查找属性的函数
       if (!this.getter) {
         this.getter = function () {}
         process.env.NODE_ENV !== 'production' && warn(
@@ -89,13 +89,13 @@ export default class Watcher {
    */
   get () {
     pushTarget(this)
-    const value = this.getter.call(this.vm, this.vm)
+    const value = this.getter.call(this.vm, this.vm)       // expOrFn可能是a.b    传入的是this.vm对象    那么函数执行会查找 this.vm.a     this.vm.a.b ------》触发get属性
     // "touch" every property so they are all tracked as
     // dependencies for deep watching
     if (this.deep) {
       traverse(value)
     }
-    popTarget()
+    popTarget()                                            // 恢复到 target 的原来的状态，
     this.cleanupDeps()
     return value
   }

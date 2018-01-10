@@ -27,7 +27,7 @@ export function initState (vm: Component) {
   if (opts.props) initProps(vm, opts.props)
   if (opts.methods) initMethods(vm, opts.methods)
   if (opts.data) {
-    initData(vm)
+    initData(vm)                                        // 大家请看， 都别走，都别走， 从这里开始了数据响应系统
   } else {
     observe(vm._data = {}, true /* asRootData */)
   }
@@ -73,7 +73,7 @@ function initProps (vm: Component, props: Object) {
 
 function initData (vm: Component) {
   let data = vm.$options.data
-  data = vm._data = typeof data === 'function'
+  data = vm._data = typeof data === 'function'                                       // 在实例对象上添加vm._data 属性，  和vm.$options.data 是相同的引用。
     ? data.call(vm)
     : data || {}
   if (!isPlainObject(data)) {
@@ -88,7 +88,7 @@ function initData (vm: Component) {
   const keys = Object.keys(data)
   const props = vm.$options.props
   let i = keys.length
-  while (i--) {
+  while (i--) {                                                                         //   循环的目的是在实例对象上对数据进行代理，这样我们就能通过 this.a 来访问 data.a 了
     if (props && hasOwn(props, keys[i])) {
       process.env.NODE_ENV !== 'production' && warn(
         `The data property "${keys[i]}" is already declared as a prop. ` +
@@ -96,11 +96,11 @@ function initData (vm: Component) {
         vm
       )
     } else {
-      proxy(vm, keys[i])
+      proxy(vm, keys[i])                                                               // 在实例对象上设置与 data属性同名的访问器属性，然后使用      _data 做数据劫持
     }
   }
   // observe data
-  observe(data, true /* asRootData */)
+  observe(data, true /* asRootData */)                                                // 开始观察data
 }
 
 const computedSharedDefinition = {
@@ -205,7 +205,7 @@ export function stateMixin (Vue: Class<Component>) {
   Vue.prototype.$set = set
   Vue.prototype.$delete = del
 
-  Vue.prototype.$watch = function (
+  Vue.prototype.$watch = function (                                   //$watch 的都是实例属性， 都可以在创建vue后  用vm.$watch调用this.$watch(function(){}, (newVal, oldVal) => {}）
     expOrFn: string | Function,
     cb: Function,
     options?: Object
@@ -213,7 +213,7 @@ export function stateMixin (Vue: Class<Component>) {
     const vm: Component = this
     options = options || {}
     options.user = true
-    const watcher = new Watcher(vm, expOrFn, cb, options)
+    const watcher = new Watcher(vm, expOrFn, cb, options)           // 外部的调用Watcher
     if (options.immediate) {
       cb.call(vm, watcher.value)
     }

@@ -21,18 +21,18 @@ export function def (obj: Object, key: string, val: any, enumerable?: boolean) {
 }
 
 /**
- * Parse simple path.                                     解析路径  具体还不知道怎么用。
+ * Parse simple path.                                     解析路径  具体还不知道怎么用。  如果以'.'结尾的返回undefined
  */
 const bailRE = /[^\w.$]/
 export function parsePath (path: string): any {
   if (bailRE.test(path)) {
     return
   } else {
-    const segments = path.split('.')
+    const segments = path.split('.')                    //  a.b.c  ---   [a,b,c]
     return function (obj) {
       for (let i = 0; i < segments.length; i++) {
         if (!obj) return
-        obj = obj[segments[i]]
+        obj = obj[segments[i]]                          // 深层次查找属性
       }
       return obj
     }

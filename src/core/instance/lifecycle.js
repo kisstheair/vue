@@ -61,7 +61,7 @@ export function lifecycleMixin (Vue: Class<Component>) {
       }
     }
     callHook(vm, 'beforeMount')                            // 触发 beforeMount 生命周期钩子
-    vm._watcher = new Watcher(vm, () => {                  // Watcher收集变量，    vm._render()渲染成虚拟DOM     vm._update将虚拟DOM中的最后一步：patch到DOcument中
+    vm._watcher = new Watcher(vm, () => {                  // 内部的Watcher收集变量，    vm._render()渲染成虚拟DOM     vm._update将虚拟DOM中的最后一步：patch到DOcument中
       vm._update(vm._render(), hydrating)
     }, noop)
     hydrating = false
@@ -87,14 +87,14 @@ export function lifecycleMixin (Vue: Class<Component>) {
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
     if (!prevVnode) {
-      // initial render
+                                                                          // initial render   如果还没有 prevVnode 说明是首次渲染，直接创建真实DOM。
       vm.$el = vm.__patch__(
         vm.$el, vnode, hydrating, false /* removeOnly */,
         vm.$options._parentElm,
         vm.$options._refElm
       )
     } else {
-      // updates
+                                                                              // updates   说明不是首次渲染，那么就采用 patch 算法进行必要的DOM操作。
       vm.$el = vm.__patch__(prevVnode, vnode)
     }
     activeInstance = prevActiveInstance
@@ -215,3 +215,21 @@ export function callHook (vm: Component, hook: string) {
     vm.$emit('hook:' + hook)
   }
 }
+
+
+
+/*Vue的调用过程实际就是按照 lifecycle的顺序进行的。
+
+ 1、构建数据响应系统，使用 Observer 将数据data转换为访问器属性；将 el 编译为 render 函数，render 函数返回值为虚拟DOM
+ 2、在 _mount 中对 _update 求值，而 _update 又会对 render 求值，render 内部又会对依赖的变量求值，收集为被求值的变量的依赖，当变量改变时，_update 又会重新执行一遍，从而做到 re-render。
+
+_开头的是内部变量，   $开头的是实例函数
+
+
+ _init----》initState----》initRender---》$mount----》
+ _mount-----》_update-----》_render--|
+                                     |
+            __patch__《-----vnode《-|
+
+
+* */

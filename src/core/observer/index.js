@@ -18,10 +18,10 @@ const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
  * By default, when a reactive property is set, the new value is
  * also converted to become reactive. However when passing down props,
  * we don't want to force conversion because the value may be a nested value
- * under a frozen data structure. Converting it would defeat the optimization.
+ * under a frozen data structure. Converting it would defeat the optimization.   默认情况下，一个响应的属性被set时，新值为也转化成反应。然而，当传递道具时， 我们不想强制转换，因为值可能是一个嵌套值。 在冻结的数据结构下。转换它将击败最优化。
  */
 export const observerState = {
-  shouldConvert: true,
+  shouldConvert: true,              //要转变
   isSettingProps: false
 }
 
@@ -40,7 +40,7 @@ export class Observer {
     this.value = value
     this.dep = new Dep()
     this.vmCount = 0
-    def(value, '__ob__', this)           // 给value对象添加一个属性 value.__ob__ = Observer的实例
+    def(value, '__ob__', this)                                                  // 给value对象添加一个属性 value.__ob__ = Observer的实例
     if (Array.isArray(value)) {
       const augment = hasProto
         ? protoAugment
@@ -99,16 +99,16 @@ function copyAugment (target: Object, src: Object, keys: Array<string>) {
 }
 
 /**
- * Attempt to create an observer instance for a value,
- * returns the new observer if successfully observed,
- * or the existing observer if the value already has one.
+ * Attempt to create an observer instance for a value,      试图创建一个data对象的观察者实例，
+ * returns the new observer if successfully observed,       如果成功了返回
+ * or the existing observer if the value already has one.   如果已经有一个了就返回。
  */
 export function observe (value: any, asRootData: ?boolean): Observer | void {
   if (!isObject(value)) {
     return
   }
   let ob: Observer | void
-  if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
+  if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {                       // data.__ob__放着一个观察者实例，  先看有没有，有了返回，没有新建一个。
     ob = value.__ob__
   } else if (
     observerState.shouldConvert &&
@@ -149,10 +149,10 @@ export function defineReactive (
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
-    get: function reactiveGetter () {
-      const value = getter ? getter.call(obj) : val
+    get: function reactiveGetter () {                                    // 先建立数据响应系统，date的每一个属性对应自己的一个Dept对象， data属性的属性也对应一个Dept对象， 数组的每一个元素对应一个Dept ，深遍历。
+      const value = getter ? getter.call(obj) : val                      // 建立响应系统之后，都可以用了，但是没有Dep.target，响应不会生效。   只有vm._watcher = new Watcher(这个执行，才会修改Dep.target， 这样就可以执行dep.depend() 了
       if (Dep.target) {
-        dep.depend()                                                      // 建立相互依赖关系
+        dep.depend()                                                      // 建立相互依赖关系   dep.depend() 才会把watcher放入自己的Dept对象中，同时把dept放入watcher中。
         if (childOb) {
           childOb.dep.depend()
         }

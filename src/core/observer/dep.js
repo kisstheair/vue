@@ -49,10 +49,10 @@ Dep.target = null
 const targetStack = []
 
 export function pushTarget (_target: Watcher) {
-  if (Dep.target) targetStack.push(Dep.target)
+  if (Dep.target) targetStack.push(Dep.target)           //  如果Dep.target 之前就有的话，那就先保存到栈，存储一下，用完之后恢复
   Dep.target = _target
 }
 
 export function popTarget () {
-  Dep.target = targetStack.pop()
+  Dep.target = targetStack.pop()                        //  用完之后恢复一下。
 }
