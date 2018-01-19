@@ -45,7 +45,7 @@ export class Observer {
       const augment = hasProto
         ? protoAugment
         : copyAugment
-      augment(value, arrayMethods, arrayKeys)
+      augment(value, arrayMethods, arrayKeys)                                   //arrayMethods 是修改后的数组函数组成的对象。           替换数组的原型上面的方法， 当数组调用push，pop 时候相应数据。
       this.observeArray(value)
     } else {
       this.walk(value)

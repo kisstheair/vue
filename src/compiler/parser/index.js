@@ -38,8 +38,22 @@ let postTransforms
 let delimiters
 
 /**
- * Convert HTML string to AST.
+ * Convert HTML string to AST.           把html 字符串 解析成AST  抽象语法树，  也就是我建立项目树的时候 ---生成treeData（ 方便以后根据treeDate渲染）
+ *
+ * 比如<span>{{message}}</span>  转换如下
+     var a = [{
+        attrs:[{}],
+        attrsList:[{}],
+        attrsMap:{id:"app"},
+        children:[],
+        parent:undefined,
+        tag:"div",
+        type:1
+      }]
+ *
  */
+
+
 export function parse (
   template: string,
   options: CompilerOptions

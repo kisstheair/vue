@@ -18,8 +18,8 @@ let uid = 0
  * and fires callback when the expression value changes.
  * This is used for both the $watch() api and directives.
  */
-export default class Watcher {
-  vm: Component;
+export default class Watcher {                                                   // 有2中类型    new Watcher （vm，ecp， cb()）       当set触发响应的时候，先执行exp获取newValue 判断==oldValue 不等的情况擦会cb()
+  vm: Component;                                                                  //               new Watcher （vm，fun()， cb()）                        先执行fun() 在执行cb()    但是必须有一个条件fun()中必须触发了get， 否则不会被Dep收集
   expression: string;
   cb: Function;
   id: number;
@@ -87,7 +87,7 @@ export default class Watcher {
   /**
    * Evaluate the getter, and re-collect dependencies.    评估吸气剂，并重新收集依赖项
    */
-  get () {
+  get () {                                                     // 带有防止重复的处理，添加了一次依赖之后，  后面的不会再添加。
     pushTarget(this)
     const value = this.getter.call(this.vm, this.vm)       // expOrFn可能是a.b    传入的是this.vm对象    那么函数执行会查找 this.vm.a     this.vm.a.b ------》触发get属性
     // "touch" every property so they are all tracked as
@@ -101,7 +101,7 @@ export default class Watcher {
   }
 
   /**
-   * Add a dependency to this directive.      把dep放入本watcher中，
+   * Add a dependency to this directive.                  把dep放入本watcher中，    data 的每一个属性都对应自己的Dep对象，  watcher在查找那一个属性的时候可能触发一串的  get 所以  对应多个Dep
    */
   addDep (dep: Dep) {
     const id = dep.id
@@ -148,7 +148,7 @@ export default class Watcher {
     } else {
       queueWatcher(this)
     }
-  }
+  }                                                    // 响应的时候   会执行这个函数。------然后再调用run------在调用get--------在执行回调cb.call（）
 
   /**
    * Scheduler job interface.
@@ -156,7 +156,7 @@ export default class Watcher {
    */
   run () {
     if (this.active) {
-      const value = this.get()
+      const value = this.get()                        //为什么要再次调用get()函数呢？
       if (
         value !== this.value ||
         // Deep watchers and watchers on Object/Arrays should fire even

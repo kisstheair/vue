@@ -57,7 +57,7 @@ Vue.prototype.$mount = function (                // 重写 $mount 方法
       const { render, staticRenderFns } = compileToFunctions(template, {
         warn,
         shouldDecodeNewlines,
-        delimiters: options.delimiters
+        delimiters: options.delimiters                              //分隔符
       }, this)
       options.render = render                                      // 将编译成的 render 函数挂载到 this.$options 属性下
       options.staticRenderFns = staticRenderFns

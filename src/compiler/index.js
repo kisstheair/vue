@@ -12,7 +12,7 @@ export function compile (
   options: CompilerOptions
 ): CompiledResult {
   const ast = parse(template.trim(), options)
-  optimize(ast, options)
+  optimize(ast, options)                                  // 使最优化，使尽可能有效
   const code = generate(ast, options)
   return {
     ast,

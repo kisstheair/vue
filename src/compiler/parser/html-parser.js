@@ -90,22 +90,22 @@ export function parseHTML (html, options) {
   let last, lastTag
   while (html) {
     last = html
-    // Make sure we're not in a script or style element
+    // Make sure we're not in a script or style element                     // 排除script,style,textarea三个标签
     if (!lastTag || !isSpecialTag(lastTag, options.sfc, stack)) {
       let textEnd = html.indexOf('<')
-      if (textEnd === 0) {
+      if (textEnd === 0) {                                        // 此时字符串是以<开头        看一看是不是 html标签，如果是的话，截取一下然后 继续循环
         // Comment:
-        if (comment.test(html)) {
+        if (comment.test(html)) {                                 // 包含注释 <!--
           const commentEnd = html.indexOf('-->')
 
-          if (commentEnd >= 0) {
+          if (commentEnd >= 0) {                                  // 把注释清除掉
             advance(commentEnd + 3)
             continue
           }
         }
 
         // http://en.wikipedia.org/wiki/Conditional_comment#Downlevel-revealed_conditional_comment
-        if (conditionalComment.test(html)) {
+        if (conditionalComment.test(html)) {                       // 清除掉  <![]> 这个样式的
           const conditionalEnd = html.indexOf(']>')
 
           if (conditionalEnd >= 0) {
@@ -115,14 +115,14 @@ export function parseHTML (html, options) {
         }
 
         // Doctype:
-        const doctypeMatch = html.match(doctype)
+        const doctypeMatch = html.match(doctype)                //  清除掉   <!DOCTYPE >
         if (doctypeMatch) {
           advance(doctypeMatch[0].length)
           continue
         }
 
         // End tag:
-        const endTagMatch = html.match(endTag)
+        const endTagMatch = html.match(endTag)                  // 结束标签  </>
         if (endTagMatch) {
           const curIndex = index
           advance(endTagMatch[0].length)
@@ -139,7 +139,7 @@ export function parseHTML (html, options) {
       }
 
       let text, rest, next
-      if (textEnd > 0) {
+      if (textEnd > 0) {                                           // 此时字符串  不是以<开头
         rest = html.slice(textEnd)
         while (
           !endTag.test(rest) &&
@@ -147,13 +147,13 @@ export function parseHTML (html, options) {
           !comment.test(rest) &&
           !conditionalComment.test(rest)
         ) {
-          // < in plain text, be forgiving and treat it as text
-          next = rest.indexOf('<', 1)
+          // < in plain text, be forgiving and treat it as text      在纯文本中，要宽恕并把它当作文本对待。   明明以< 开头了 但是呢去不是 tag，所以宽恕他为文本吧
+          next = rest.indexOf('<', 1)                               // 从 1的位置开始算起
           if (next < 0) break
           textEnd += next
-          rest = html.slice(textEnd)
+          rest = html.slice(textEnd)                                // 跳过这个 <   继续从下面的开始。
         }
-        text = html.substring(0, textEnd)
+        text = html.substring(0, textEnd)                           // 这个while 最终 找出所有的text文本，
         advance(textEnd)
       }
 
