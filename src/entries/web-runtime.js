@@ -26,7 +26,7 @@ extend(Vue.options.directives, platformDirectives)
 extend(Vue.options.components, platformComponents)
 
 // install platform patch function
-Vue.prototype.__patch__ = inBrowser ? patch : noop
+Vue.prototype.__patch__ = inBrowser ? patch : noop        // 打补丁，补漏洞， 这是vue发生改变， 需要更新的时候， 去打补丁
 
 // wrap mount
 Vue.prototype.$mount = function (

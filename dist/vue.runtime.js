@@ -4014,7 +4014,7 @@ function createKeyToOldIdx (children, beginIdx, endIdx) {
   return map
 }
 
-function createPatchFunction (backend) {
+function createPatchFunction (backend) {                                   // 创建 打补丁的函数。
   var i, j;
   var cbs = {};
 
@@ -4491,7 +4491,7 @@ function createPatchFunction (backend) {
     }
   }
 
-  return function patch (oldVnode, vnode, hydrating, removeOnly, parentElm, refElm) {
+  return function patch (oldVnode, vnode, hydrating, removeOnly, parentElm, refElm) {                //修补，拼凑;  补丁，  给 html打补丁。
     if (!vnode) {
       if (oldVnode) { invokeDestroyHook(oldVnode); }
       return

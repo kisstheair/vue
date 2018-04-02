@@ -51,7 +51,7 @@ function createKeyToOldIdx (children, beginIdx, endIdx) {
 
 export function createPatchFunction (backend) {
   let i, j
-  const cbs = {}
+  const cbs = {}                                     // 存放的是各个 属性的数组  例如 ：{create:[fn1,fn2,fn3], update:[fn1,fn2,,,]}
 
   const { modules, nodeOps } = backend
 
@@ -115,7 +115,7 @@ export function createPatchFunction (backend) {
       }
       vnode.elm = vnode.ns
         ? nodeOps.createElementNS(vnode.ns, tag)
-        : nodeOps.createElement(tag, vnode)
+        : nodeOps.createElement(tag, vnode)                                                                  // 真正 vnode  转换为 node 的地方。
       setScope(vnode)
 
       /* istanbul ignore if */
@@ -615,7 +615,7 @@ export function createPatchFunction (backend) {
       }
     }
 
-    invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch)
+    invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch)          // 调用插入钩
     return vnode.elm
   }
 }

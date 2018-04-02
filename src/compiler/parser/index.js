@@ -137,7 +137,7 @@ export function parse (
 
         processRef(element)
         processSlot(element)
-        processComponent(element)
+        processComponent(element)                                     // 碰到是组件的怎么办，  加载上属性 例如 <svg-icon></svg-icon>   <div is="svgIcon"/>  element.component = "svgIcon"
         for (let i = 0; i < transforms.length; i++) {
           transforms[i](element, options)
         }
