@@ -5,7 +5,7 @@ import { eventsMixin } from './events'
 import { lifecycleMixin } from './lifecycle'
 import { warn } from '../util/index'
 
-function Vue (options) {                             //这就是定义的Vue 类   也就是构造函数                                所有这个文件夹的js  其实最后就生产一个Vue 类，   类上有很多函数。
+function Vue (options) {                             //这就是定义的Vue 类   也就是构造函数                                所有这个文件夹的js  其实最后就生产一个Vue 类，   类上有很多函数。 var vm = new Vue({}）之后 执行了init函数。
   if (process.env.NODE_ENV !== 'production' &&
     !(this instanceof Vue)) {
     warn('Vue is a constructor and should be called with the `new` keyword')

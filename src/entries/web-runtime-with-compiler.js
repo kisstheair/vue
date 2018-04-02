@@ -63,7 +63,7 @@ Vue.prototype.$mount = function (                // 重写 $mount 方法
       options.staticRenderFns = staticRenderFns
     }
   }
-  return mount.call(this, el, hydrating)                            // 调用已经缓存下来的 web-runtime.js 文件中的 $mount 方法
+  return mount.call(this, el, hydrating)                          // 调用已经缓存下来的 web-runtime.js 文件中的 $mount 方法
 }
 
 /**

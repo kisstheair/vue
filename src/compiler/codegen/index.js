@@ -37,8 +37,8 @@ export function generate (
   staticRenderFns = prevStaticRenderFns
   onceCount = prevOnceCount
   return {
-    render: `with(this){return ${code}}`,
-    staticRenderFns: currentStaticRenderFns
+    render: `with(this){return ${code}}`,                            //  ${} 是占位符， ``是ES2015的语法，代表的也是就是代码，就是为了方便加占位符的，   例如 console.log(`一共有${a}个鸡蛋！`)      那么`` 执行的时候相当于一个函数了  传入占位符，  js引擎解析一下返回结果
+    staticRenderFns: currentStaticRenderFns                           // 那么在这里肯定需要  js引擎解析一下with(this){。。。}    然后返回
   }
 }
 
