@@ -98,6 +98,7 @@ function genConfig (opts) {
   const config = {
     entry: opts.entry,
     dest: opts.dest,
+	  sourceMap: true,
     external: opts.external,
     format: opts.format,
     banner: opts.banner,

@@ -306,7 +306,7 @@ export function mergeOptions (                 //mergeOptions根据融合策略�
 
 /**
  * Resolve an asset.
- * This function is used because child instances need access
+ * This function is used because child instances need access  使用此函数是因为子实例需要访问到在其祖先链中定义的资产。
  * to assets defined in its ancestor chain.
  */
 export function resolveAsset (

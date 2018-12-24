@@ -46,7 +46,7 @@ export default class VNode {
     this.isRootInsert = true
     this.isComment = false
     this.isCloned = false
-    this.isOnce = false
+    this.isOnce = false                // 只更新一次，  后面的当作静态内容来对待。 <span v-once>This will never change: {{msg}}</span>     msg 内容显示后 就不再变化了，  数据动--dom不动 了， 好像不再双向绑定了。
   }
 }
 

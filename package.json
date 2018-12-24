@@ -67,7 +67,7 @@
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-vue-jsx": "^3.2.0",
     "babel-preset-es2015": "^6.9.0",
-    "babel-preset-flow-vue": "^1.0.0",                 // 移除flow的注释内容，  flow类型并不是正确的javascript语法，需要去除
+    "babel-preset-flow-vue": "^1.0.0",
     "buble": "^0.14.0",
     "chromedriver": "^2.21.2",
     "codecov.io": "^0.1.6",

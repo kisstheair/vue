@@ -146,7 +146,7 @@ export function renderMixin (Vue: Class<Component>) {
     index: number,
     key: string
   ) {
-    markStatic(tree, `__once__${index}${key ? `_${key}` : ``}`, true)
+    markStatic(tree, `__once__${index}${key ? `_${key}` : ``}`, true)             //   制造一个节点   key =' __once__index_key'
     return tree
   }
 
