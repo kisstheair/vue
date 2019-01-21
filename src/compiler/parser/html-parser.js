@@ -13,17 +13,17 @@ import { makeMap, no } from 'shared/util'
 import { isNonPhrasingTag, canBeLeftOpenTag } from 'web/compiler/util'
 
 // Regular Expressions for parsing tags and attributes
-const singleAttrIdentifier = /([^\s"'<>/=]+)/
-const singleAttrAssign = /(?:=)/
+const singleAttrIdentifier = /([^\s"'<>/=]+)/                  // 单属性标识符   除了（空白符，引号，<> / =）
+const singleAttrAssign = /(?:=)/                               //单属性赋值号    =
 const singleAttrValues = [
   // attr value double quotes
-  /"([^"]*)"+/.source,
+  /"([^"]*)"+/.source,                                   //属性值， 双引号包括，   其中包含的除了双引号
   // attr value, single quotes
-  /'([^']*)'+/.source,
+  /'([^']*)'+/.source,                                    //属性值， 单引号包括，，，其中包含的除了单引号
   // attr value, no quotes
-  /([^\s"'=<>`]+)/.source
+  /([^\s"'=<>`]+)/.source                                //属性值，   没有引号
 ]
-const attribute = new RegExp(
+const attribute = new RegExp(                          // 组合成属性的正则，可以匹配的结果  AA = 12，  BB = '123', CC = "345"
   '^\\s*' + singleAttrIdentifier.source +
   '(?:\\s*(' + singleAttrAssign.source + ')' +
   '\\s*(?:' + singleAttrValues.join('|') + '))?'
@@ -32,13 +32,13 @@ const attribute = new RegExp(
 // could use https://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-QName
 // but for Vue templates we can enforce a simple charset
 const ncname = '[a-zA-Z_][\\w\\-\\.]*'
-const qnameCapture = '((?:' + ncname + '\\:)?' + ncname + ')'
-const startTagOpen = new RegExp('^<' + qnameCapture)
-const startTagClose = /^\s*(\/?)>/
-const endTag = new RegExp('^<\\/' + qnameCapture + '[^>]*>')
+const qnameCapture = '((?:' + ncname + '\\:)?' + ncname + ')'        // 捕获名称
+const startTagOpen = new RegExp('^<' + qnameCapture)                //开始标签打开的开始 <....
+const startTagClose = /^\s*(\/?)>/                                  // 开始标签的结束  空格>  或者 空格/>
+const endTag = new RegExp('^<\\/' + qnameCapture + '[^>]*>')        // 结束标签 </fwefwer234>
 const doctype = /^<!DOCTYPE [^>]+>/i
 const comment = /^<!--/
-const conditionalComment = /^<!\[/
+const conditionalComment = /^<!\[/                                   //条件注释  <![CDATA[]]>]]>这是一种， 不需要解析
 
 let IS_REGEX_CAPTURING_BROKEN = false
 'x'.replace(/x(.)?/g, function (m, g) {
@@ -92,7 +92,7 @@ export function parseHTML (html, options) {
     last = html
     // Make sure we're not in a script or style element                     // 排除script,style,textarea三个标签
     if (!lastTag || !isSpecialTag(lastTag, options.sfc, stack)) {
-      let textEnd = html.indexOf('<')
+      let textEnd = html.indexOf('<')                             // 是不是以< 开头的，是就是tag， 不是就是文本
       if (textEnd === 0) {                                        // 此时字符串是以<开头        看一看是不是 html标签，如果是的话，截取一下然后 继续循环
         // Comment:
         if (comment.test(html)) {                                 // 包含注释 <!--
@@ -131,7 +131,7 @@ export function parseHTML (html, options) {
         }
 
         // Start tag:
-        const startTagMatch = parseStartTag()
+        const startTagMatch = parseStartTag()        //匹配开始标签，有点复杂，开始标签 可能有很多属性
         if (startTagMatch) {
           handleStartTag(startTagMatch)
           continue
@@ -139,19 +139,19 @@ export function parseHTML (html, options) {
       }
 
       let text, rest, next
-      if (textEnd > 0) {                                           // 此时字符串  不是以<开头
+      if (textEnd > 0) {                                           // 此时字符串  不是以<开头  ，那就是文本
         rest = html.slice(textEnd)
         while (
-          !endTag.test(rest) &&
+          !endTag.test(rest) &&                                 //不是 结束标签，不是开始标签，不是注释标签，不是条件注释标签，的情况下，   把这个<>  删除掉
           !startTagOpen.test(rest) &&
           !comment.test(rest) &&
           !conditionalComment.test(rest)
         ) {
           // < in plain text, be forgiving and treat it as text      在纯文本中，要宽恕并把它当作文本对待。   明明以< 开头了 但是呢去不是 tag，所以宽恕他为文本吧
-          next = rest.indexOf('<', 1)                               // 从 1的位置开始算起
-          if (next < 0) break
+          next = rest.indexOf('<', 1)                               //rest是剪切过文本的， 下面的应该是<开始的，   这里 从 1的位置开始算起，那就匹配下一个<
+          if (next < 0) break                                     // 剩下的都是纯文本了， 不考虑 tag了
           textEnd += next
-          rest = html.slice(textEnd)                                // 跳过这个 <   继续从下面的开始。
+          rest = html.slice(textEnd)                                // 减掉一个tag  <>。那是什么标签呢？           //不是 结束标签，不是开始标签，不是注释标签，不是条件注释标签，的情况下，   把这个<>  删除掉
         }
         text = html.substring(0, textEnd)                           // 这个while 最终 找出所有的text文本，
         advance(textEnd)
@@ -165,6 +165,7 @@ export function parseHTML (html, options) {
       if (options.chars && text) {
         options.chars(text)
       }
+
     } else {
       var stackedTag = lastTag.toLowerCase()
       var reStackedTag = reCache[stackedTag] || (reCache[stackedTag] = new RegExp('([\\s\\S]*?)(</' + stackedTag + '[^>]*>)', 'i'))
@@ -201,18 +202,18 @@ export function parseHTML (html, options) {
   }
 
   function parseStartTag () {
-    const start = html.match(startTagOpen)
+    const start = html.match(startTagOpen)            //匹配到开始标签的开始 <
     if (start) {
-      const match = {
+      const match = {                               // 匹配到 tag名字，属性，开始位置，结束位置
         tagName: start[1],
         attrs: [],
         start: index
       }
-      advance(start[0].length)
+      advance(start[0].length)       //剪切掉<
       let end, attr
-      while (!(end = html.match(startTagClose)) && (attr = html.match(attribute))) {
-        advance(attr[0].length)
-        match.attrs.push(attr)
+      while (!(end = html.match(startTagClose)) && (attr = html.match(attribute))) {    // 匹配到属性，并且还没到开始标签的结尾 >
+        advance(attr[0].length)         //剪切掉属性的长度
+        match.attrs.push(attr)         // 属性放到属性数组
       }
       if (end) {
         match.unarySlash = end[1]

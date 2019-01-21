@@ -10,8 +10,8 @@ import { mergeOptions } from '../util/index'
 let uid = 0
 
 export function initMixin (Vue: Class<Component>) {
-  Vue.prototype._init = function (options?: Object) {          // vue初始化  执行的第一个函数
-    const vm: Component = this                                //这里的this  应该是指的是Vue的实例对象，  那么  vm = Vue 的一个实例
+  Vue.prototype._init = function (options?: Object) {          // 这里只是把 _init函数加到Vue原型对象上面，并没有执行，  vue实例化之后， 执行的第一个函数
+    const vm: Component = this                                //这里的this  _init函数执行是在 构造函数中执行的， this._init(options)  所以这里额this 指的是实例对象。
     // a uid
     vm._uid = uid++
     // a flag to avoid this being observed
@@ -24,14 +24,14 @@ export function initMixin (Vue: Class<Component>) {
       initInternalComponent(vm, options)
     } else {
       vm.$options = mergeOptions(                              //第一步要做的是 使用策略对象合并参数选项。 el 选项会使用 defaultStrat 默认策略函数处理，，data 选项则会使用 strats.data 策略函数处理
-        resolveConstructorOptions(vm.constructor),           // Vue.options   （如果定义了super可能会 对options进行修改）
-        options || {},                                        //  options        是我们调用Vue传入的options
-        vm                                                    // Vue.prototype == this
+        resolveConstructorOptions(vm.constructor),           // vm.constructor指的是构造函数，Vue   （如果定义了super可能会 对options进行修改）
+        options || {},                                        //  options   是我们调用Vue传入的options，  新建vue的时候传入的参数，也就是实例自己的参数
+        vm                                                    // 是指的实例自己。
       )
     }
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
-      initProxy(vm)
+      initProxy(vm)                                   // 添加代理， 还是不太明白
     } else {
       vm._renderProxy = vm
     }
@@ -63,10 +63,10 @@ function initInternalComponent (vm: Component, options: InternalComponentOptions
   }
 }
 
-export function resolveConstructorOptions (Ctor: Class<Component>) {      //传入的是Vue
+export function resolveConstructorOptions (Ctor: Class<Component>) {      //传入的是Vue构造函数
   let options = Ctor.options
-  if (Ctor.super) {
-    const superOptions = Ctor.super.options
+  if (Ctor.super) {                                            //vue是可以继承的， 如果是继承过来的， 继承的方式是Vue.extend = function (extendOptions: Object) ，所以多添加了一些option选项，并且构造函数上也有了super属性，指向父
+    const superOptions = Ctor.super.options                   //把继承之后的参数，和父的参数合并一下。
     const cachedSuperOptions = Ctor.superOptions
     const extendOptions = Ctor.extendOptions
     if (superOptions !== cachedSuperOptions) {

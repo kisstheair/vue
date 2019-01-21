@@ -60,24 +60,24 @@ declare type ASTDirective = {
   modifiers: ?ASTModifiers;
 }
 
-declare type ASTNode = ASTElement | ASTText | ASTExpression
+declare type ASTNode = ASTElement | ASTText | ASTExpression    // ASTNode 有3种类型， 用tpe分别， 1是Element 2是 表达式， 3是text文本
 
-declare type ASTElement = {
-  type: 1;
-  tag: string;
-  attrsList: Array<{ name: string; value: string }>;
-  attrsMap: { [key: string]: string | null };
+declare type ASTElement = {　　　　　　　　　　　　　　　　　　//抽象语法树（abstract syntax tree或者缩写为AST）
+  type: 1;                                                   // 1是Element 2是 表达式， 3是text文本
+  tag: string;                                              //　标签名字　　div ,p, h1, span
+  attrsList: Array<{ name: string; value: string }>;        // 用正则解析出来最原始的字符串数据，[{name: "id", value: "demo"}]
+  attrsMap: { [key: string]: string | null };              // 把上面的原始数据转换一个格式而已{id: "demo"}
   parent: ASTElement | void;
   children: Array<ASTNode>;
 
-  static?: boolean;
+  static?: boolean;                                    // 是不是静态元素， 纯文本，
   staticRoot?: boolean;
   staticInFor?: boolean;
   staticProcessed?: boolean;
   hasBindings?: boolean;
 
-  text?: string;
-  attrs?: Array<{ name: string; value: string }>;
+  text?: string;                                         // 文本内容
+  attrs?: Array<{ name: string; value: string }>;       // 这是什么 需要真实渲染的数据吗?
   props?: Array<{ name: string; value: string }>;
   plain?: boolean;
   pre?: true;
@@ -94,7 +94,7 @@ declare type ASTElement = {
   ref?: string;
   refInFor?: boolean;
 
-  if?: string;
+  if?: string;                                      // if      v-if="isShow === 1" 对应的属性    isShow === 1
   ifProcessed?: boolean;
   elseif?: string;
   else?: true;

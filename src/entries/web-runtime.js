@@ -22,8 +22,8 @@ Vue.config.getTagNamespace = getTagNamespace
 Vue.config.mustUseProp = mustUseProp
 
 // install platform runtime directives & components    安装平台特定的 指令 和 组件
-extend(Vue.options.directives, platformDirectives)
-extend(Vue.options.components, platformComponents)
+extend(Vue.options.directives, platformDirectives)    // 默认每一个实例都有的指令             // model,show  （runtime时候）
+extend(Vue.options.components, platformComponents)     // 默认每一个vue实例都预先添加的组件   // Transition,TransitionGroup   （runtime时候）
 
 // install platform patch function
 Vue.prototype.__patch__ = inBrowser ? patch : noop        // 打补丁，补漏洞， 这是vue发生改变， 需要更新的时候， 去打补丁

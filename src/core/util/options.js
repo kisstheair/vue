@@ -263,12 +263,12 @@ function normalizeDirectives (options: Object) {
  * Core utility used in both instantiation and inheritance.    用于实例化和继承的  核心程序
  */
 export function mergeOptions (                 //mergeOptions根据融合策略把各个属性都融合到一起。  strats是融合策略的数组，data怎么融合  指令怎么融合，钩子怎么融合，都保存在strats数组中
-  parent: Object,
-  child: Object,
+  parent: Object,                              //构造函数的option参数
+  child: Object,                              //实例传入的option参数
   vm?: Component
 ): Object {
   if (process.env.NODE_ENV !== 'production') {
-    checkComponents(child)
+    checkComponents(child)                      // 核对选项上面的components属性中有没有slot,component  这2个是内建的属性， 不允许自己添加
   }
   normalizeProps(child)
   normalizeDirectives(child)
@@ -289,10 +289,10 @@ export function mergeOptions (                 //mergeOptions根据融合策略�
   }
   const options = {}
   let key
-  for (key in parent) {
+  for (key in parent) {       // 先把 parent 的属性合并到options中
     mergeField(key)
   }
-  for (key in child) {
+  for (key in child) {          //然后再把父没有的合并到 option中
     if (!hasOwn(parent, key)) {
       mergeField(key)
     }

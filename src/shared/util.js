@@ -73,7 +73,7 @@ export function isPrimitive (value: any): boolean {
 /**
  * Create a cached version of a pure function.                      // 制造的是一个个缓存系统 的函数。   制造出来的函数 传入一个值 处理一下，备份之后再返回，  下次在用到 先查询备份的有没有。
  */
-export function cached (fn: Function): Function {
+export function cached (fn: Function): Function {                 // 传入的函数， 函数处理一下返回。
   const cache = Object.create(null)
   return function cachedFn (str: string): any {
     const hit = cache[str]

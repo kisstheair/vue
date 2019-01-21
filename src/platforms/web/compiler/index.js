@@ -11,7 +11,7 @@ import { isUnaryTag } from './util'
 
 const cache: { [key: string]: CompiledFunctionResult } = Object.create(null)
 
-export const baseOptions: CompilerOptions = {
+export const baseOptions: CompilerOptions = {               //编译模板的基础参数
   expectHTML: true,
   modules,
   staticKeys: genStaticKeys(modules),
@@ -30,7 +30,7 @@ export function compile (
   options = options
     ? extend(extend({}, baseOptions), options)
     : baseOptions
-  return baseCompile(template, options)
+  return baseCompile(template, options)            // 传入 模板 ---返回 {AST ，render函数，}
 }
 
 export function compileToFunctions (
@@ -63,7 +63,7 @@ export function compileToFunctions (
     return cache[key]
   }
   const res = {}
-  const compiled = compile(template, options)
+  const compiled = compile(template, options)      //编译结果
   res.render = makeFunction(compiled.render)
   const l = compiled.staticRenderFns.length
   res.staticRenderFns = new Array(l)
@@ -80,7 +80,7 @@ export function compileToFunctions (
       )
     }
   }
-  return (cache[key] = res)
+  return (cache[key] = res)          // 返回编译好的匿名函数 ，并缓存，
 }
 
 function makeFunction (code) {

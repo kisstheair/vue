@@ -15,7 +15,7 @@ let staticRenderFns
 let onceCount
 let currentOptions
 
-export function generate (
+export function generate (　　　　　　　　　　　　　　　　　　　　　// 解释器， 把AST 解析成  html
   ast: ASTElement | void,
   options: CompilerOptions
 ): {
@@ -298,7 +298,7 @@ function genChildren (el: ASTElement, checkSkip?: boolean): string | void {
   }
 }
 
-// determine the normalzation needed for the children array.
+// determine the normalzation needed for the children array.　　　　　	确定子数组所需的规范化。
 // 0: no normalization needed
 // 1: simple normalization needed (possible 1-level deep nested array)
 // 2: full nomralization needed
@@ -317,7 +317,7 @@ function getNormalizationType (children): number {
   return 0
 }
 
-function needsNormalization (el) {
+function needsNormalization (el) {                                //需要规范化的元素？
   return el.for || el.tag === 'template' || el.tag === 'slot'
 }
 

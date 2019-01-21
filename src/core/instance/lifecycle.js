@@ -61,8 +61,8 @@ export function lifecycleMixin (Vue: Class<Component>) {
       }
     }
     callHook(vm, 'beforeMount')                            // 触发 beforeMount 生命周期钩子
-    vm._watcher = new Watcher(vm, () => {                  // 内部的Watcher收集变量，    vm._render()渲染成虚拟DOM     vm._update将虚拟DOM中的最后一步：patch到DOcument中
-      vm._update(vm._render(), hydrating)                  // update()中没有触发 data.get  ,  那么必须render()中触发了get，  否则不会被Dept收集
+    vm._watcher = new Watcher(vm, () => {                  // 内部的Watcher收集变量，  newWatcher 中触发了get被Dept收集                      相应于一个vm实例只对应一个watcher，
+      vm._update(vm._render(), hydrating)                  // vm._render()渲染成虚拟DOM     vm._update将虚拟DOM中的最后一步：patch到DOcument中
     }, noop)                                               // new Watcher() 是新检测一个属性，然后执行回调，  然而这里的回调是noop 显然这里不是为了响应的。  vm._update已经完成了所有了呀？  这里用Watcher有什么用呢？
     hydrating = false
     // manually mounted instance, call mounted on self

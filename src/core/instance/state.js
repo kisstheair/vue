@@ -73,7 +73,7 @@ function initProps (vm: Component, props: Object) {
 
 function initData (vm: Component) {
   let data = vm.$options.data
-  data = vm._data = typeof data === 'function'                                       // 在实例对象上添加vm._data 属性，  和vm.$options.data 是相同的引用。
+  data = vm._data = typeof data === 'function'                                       // 在实例对象上添加vm._data 属性，  和vm.$options.data 是相同的引用。  vm.AA 通过代理招的是 vm._data【AA】
     ? data.call(vm)
     : data || {}
   if (!isPlainObject(data)) {

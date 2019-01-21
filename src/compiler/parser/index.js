@@ -18,14 +18,14 @@ import {
 } from '../helpers'
 
 export const dirRE = /^v-|^@|^:/
-export const forAliasRE = /(.*?)\s+(?:in|of)\s+(.*)/
-export const forIteratorRE = /\((\{[^}]*\}|[^,]*),([^,]*)(?:,([^,]*))?\)/
+export const forAliasRE = /(.*?)\s+(?:in|of)\s+(.*)/                           // 匹配for 循环的内容  item in sexlist
+export const forIteratorRE = /\((\{[^}]*\}|[^,]*),([^,]*)(?:,([^,]*))?\)/     // for 迭代器 (item ,index)
 const bindRE = /^:|^v-bind:/
 const onRE = /^@|^v-on:/
 const argRE = /:(.*)$/
 const modifierRE = /\.[^.]+/g
 
-const decodeHTMLCached = cached(decode)
+const decodeHTMLCached = cached(decode)          // 解码（HTML），     里面可以缓存，
 
 // configurable state
 let warn
@@ -62,7 +62,7 @@ export function parse (
   platformGetTagNamespace = options.getTagNamespace || no
   platformMustUseProp = options.mustUseProp || no
   platformIsPreTag = options.isPreTag || no
-  preTransforms = pluckModuleFunction(options.modules, 'preTransformNode')
+  preTransforms = pluckModuleFunction(options.modules, 'preTransformNode')      //拔出模块对应的函数，   options.modules 是 【key:cb()】,    这里把 存在preTransformNode为key 的函数 放到一个数组里
   transforms = pluckModuleFunction(options.modules, 'transformNode')
   postTransforms = pluckModuleFunction(options.modules, 'postTransformNode')
   delimiters = options.delimiters
@@ -100,7 +100,7 @@ export function parse (
         element.ns = ns
       }
 
-      if (isForbiddenTag(element) && !isServerRendering()) {
+      if (isForbiddenTag(element) && !isServerRendering()) {           //isForbiddenTag   style script 是禁用的元素，
         element.forbidden = true
         process.env.NODE_ENV !== 'production' && warn(
           'Templates should only be responsible for mapping the state to the ' +
@@ -115,12 +115,12 @@ export function parse (
       }
 
       if (!inVPre) {
-        processPre(element)
+        processPre(element)              // 如果有 v-pre属性，  添加element.pre = true
         if (element.pre) {
           inVPre = true
         }
       }
-      if (platformIsPreTag(element.tag)) {
+      if (platformIsPreTag(element.tag)) {    // 如果 element.tag名称 是 pre  那就是平台的前置 tag
         inPre = true
       }
       if (inVPre) {

@@ -40,7 +40,7 @@ export class Observer {
     this.value = value
     this.dep = new Dep()
     this.vmCount = 0
-    def(value, '__ob__', this)                                                  // 给value对象添加一个属性 value.__ob__ = Observer的实例
+    def(value, '__ob__', this)                                                  // 给value对象添加一个属性 value.__ob__ = Observer的实例 观察者
     if (Array.isArray(value)) {
       const augment = hasProto
         ? protoAugment
@@ -154,7 +154,7 @@ export function defineReactive (
       if (Dep.target) {
         dep.depend()                                                      // 建立相互依赖关系   dep.depend() 才会把watcher放入自己的Dept对象中，同时把dept放入watcher中。
         if (childOb) {
-          childOb.dep.depend()
+          childOb.dep.depend()                                    // 同时子收集依赖， ---------那就是 子包含的watcher  是父的包集。
         }
         if (Array.isArray(value)) {
           dependArray(value)

@@ -43,7 +43,7 @@ export function initExtend (Vue: GlobalAPI) {
       Super.options,
       extendOptions
     )
-    Sub['super'] = Super
+    Sub['super'] = Super                                    // vue可以继承，面向对象的方式，  那么子类就有一个super属性。
     // allow further extension/mixin/plugin usage
     Sub.extend = Super.extend
     Sub.mixin = Super.mixin

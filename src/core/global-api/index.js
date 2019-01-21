@@ -35,7 +35,7 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // components with in Weex's multi-instance scenarios.
   Vue.options._base = Vue
 
-  util.extend(Vue.options.components, builtInComponents)
+  util.extend(Vue.options.components, builtInComponents)     //内建立组件，KeepAlive，  每一个vue实例都会有的
 
   initUse(Vue)
   initMixin(Vue)
