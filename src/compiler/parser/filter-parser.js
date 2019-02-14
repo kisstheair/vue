@@ -1,5 +1,8 @@
 /* @flow */
 
+//字符的编码 0x22 "  0x27 '  0x28 (  0x29 )  0x2f /   0x5B [ 0x5C \ 0x5D ]  0x60 `  0x7B {  0x7C |  0x7D }
+
+
 export function parseFilters (exp: string): string {
   let inSingle = false
   let inDouble = false
@@ -15,13 +18,13 @@ export function parseFilters (exp: string): string {
     prev = c
     c = exp.charCodeAt(i)
     if (inSingle) {
-      if (c === 0x27 && prev !== 0x5C) inSingle = false
+      if (c === 0x27 && prev !== 0x5C) inSingle = false             //在单引号中
     } else if (inDouble) {
-      if (c === 0x22 && prev !== 0x5C) inDouble = false
+      if (c === 0x22 && prev !== 0x5C) inDouble = false             //在双引号中
     } else if (inTemplateString) {
-      if (c === 0x60 && prev !== 0x5C) inTemplateString = false
+      if (c === 0x60 && prev !== 0x5C) inTemplateString = false　　　// 在 ` ` 中
     } else if (inRegex) {
-      if (c === 0x2f && prev !== 0x5C) inRegex = false
+      if (c === 0x2f && prev !== 0x5C) inRegex = false               //在正则表达式中
     } else if (
       c === 0x7C && // pipe
       exp.charCodeAt(i + 1) !== 0x7C &&

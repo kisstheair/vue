@@ -4,7 +4,7 @@ import { makeMap } from 'shared/util'
 
 // attributes that should be using props for binding
 const acceptValue = makeMap('input,textarea,option,select')
-export const mustUseProp = (tag: string, attr: string): boolean => {
+export const mustUseProp = (tag: string, attr: string): boolean => {         //必须更新的属性
   return (
     (attr === 'value' && acceptValue(tag)) ||
     (attr === 'selected' && tag === 'option') ||

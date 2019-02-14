@@ -205,7 +205,7 @@ export function parse (
       for (let i = 0; i < postTransforms.length; i++) {
         postTransforms[i](element, options)
       }
-    },
+    },                        // 传入开始标签处理函数
 
     end () {
       // remove trailing whitespace
@@ -224,7 +224,7 @@ export function parse (
       if (platformIsPreTag(element.tag)) {
         inPre = false
       }
-    },
+    },                                        // 传入结束标签处理函数
 
     chars (text: string) {
       if (!currentParent) {
@@ -263,7 +263,7 @@ export function parse (
           })
         }
       }
-    }
+    }                          // 传入中间的文本处理函数
   })
   return root
 }
@@ -320,7 +320,7 @@ function processFor (el) {
     }
     el.for = inMatch[2].trim()
     const alias = inMatch[1].trim()
-    const iteratorMatch = alias.match(forIteratorRE)
+    const iteratorMatch = alias.match(forIteratorRE)    // for的迭代器 看看哟没有 （item ，index）
     if (iteratorMatch) {
       el.alias = iteratorMatch[1].trim()
       el.iterator1 = iteratorMatch[2].trim()
@@ -429,23 +429,23 @@ function processComponent (el) {
   }
 }
 
-function processAttrs (el) {
+function processAttrs (el) {                                    //处理所有属性
   const list = el.attrsList
   let i, l, name, rawName, value, arg, modifiers, isProp
-  for (i = 0, l = list.length; i < l; i++) {
+  for (i = 0, l = list.length; i < l; i++) {                  //遍历attrsList　　列表
     name = rawName = list[i].name
     value = list[i].value
-    if (dirRE.test(name)) {
+    if (dirRE.test(name)) {　　　　　　　　　　　　　　　　　　　// 如果属性是以 v-， @ ， ： 开头的属性
       // mark element as dynamic
-      el.hasBindings = true
+      el.hasBindings = true                                // 元素有绑定
       // modifiers
-      modifiers = parseModifiers(name)
+      modifiers = parseModifiers(name)                     // 解析是不是有修饰符， 也就是判断有没有.   如 A.b
       if (modifiers) {
         name = name.replace(modifierRE, '')
       }
       if (bindRE.test(name)) { // v-bind
-        name = name.replace(bindRE, '')
-        value = parseFilters(value)
+        name = name.replace(bindRE, '')                 //找出绑定的key 如 :arryBody      那么这里name就是 arryBody
+        value = parseFilters(value)　　　　　　　　　　　// 处理一下value  可能是这样的 {14sfd * sdf  (sdf)}
         isProp = false
         if (modifiers) {
           if (modifiers.prop) {
@@ -457,7 +457,7 @@ function processAttrs (el) {
             name = camelize(name)
           }
         }
-        if (isProp || platformMustUseProp(el.tag, name)) {
+        if (isProp || platformMustUseProp(el.tag, name)) {　　　　// 平台不许更新的属性，
           addProp(el, name, value)
         } else {
           addAttr(el, name, value)

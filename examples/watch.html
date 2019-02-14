@@ -18,14 +18,16 @@
         <label :for="branch">{{ branch }}</label>
     </template>
 
-    <p >当前分支{{ currentBranch }}</p>
+    <p >当前分支{{ AAA }}</p>
+    <p >数量{{ count }}</p>
+    <p v-for="index in AAA">afasgf{{index}}</p>
 
     <ul >
         <li v-for="record in commits">
             <a :href="record.html_url" target="_blank" class="commit">{{ record.sha.slice(0, 7) }}</a>
-            - <span class="message">{{ record.commit.message | truncate }}</span><br>
+            - <span class="message">{{ record.commit.message }}</span><br>
             by <span class="author"><a :href="record.author.html_url" target="_blank">{{ record.commit.author.name }}</a></span>
-            at <span class="date">{{ record.commit.author.date | formatDate }}</span>
+            at <span class="date">{{ record.commit.author.date }}</span>
         </li>
     </ul>
 </div>
@@ -41,7 +43,8 @@
 			branches: ['master', 'dev'],
 			currentBranch: 'master',
 			commits: null,
-			isShow: 1,
+			time: new Date(),
+            count:0
 		},
 
 		created: function () {
@@ -52,14 +55,17 @@
 			currentBranch: 'getUrlData',
 		},
 
-		filters: {
-			truncate: function (v) {
-				var newline = v.indexOf('\n')
-				return newline > 0 ? v.slice(0, newline) : v
+		computed: {
+			AAA:function () {
+
+                return [1,2,3,4]
 			},
-			formatDate: function (v) {
-				return v.replace(/T|Z/g, ' ')
-			}
+
+            BBB:function () {
+				this.count ++;
+                return this.currentBranch +'+++++++++'+ this.time;
+			},
+
 		},
 
 		methods: {
@@ -72,7 +78,12 @@
 					console.log(self.commits[0].html_url)
 				}
 				xhr.send()
-			}
+			},
+
+
+
+
+
 		}
 	})
 

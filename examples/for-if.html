@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Vue </title>
+    <script src="../dist/vue.js"></script>
+</head>
+<body>
+
+<div id="demo" >
+    <template v-for="item in aMan">
+        <input type="radio" :value="item" name="item"  v-model="currentMan">
+        <label :for="item">{{ item }}</label>
+    </template>
+
+    <p v-if="currentMan === 'high'">  高实在是高 {{ currentMan }}</p>
+    <p v-else-if="currentMan === 'low'">  太low了， {{ currentMan }}</p>
+    <p v-else  > 就问你屌不屌</p>
+</div>
+
+
+
+<script>
+	var demo = new Vue({
+		el: '#demo',
+		data: {
+			aMan: ['high', 'low'],
+			currentMan: 'high'
+		},
+	})
+</script>
+</body>
+</html>

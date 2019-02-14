@@ -74,11 +74,11 @@ declare type ASTElement = {　　　　　　　　　　　　　　　　　�
   staticRoot?: boolean;
   staticInFor?: boolean;
   staticProcessed?: boolean;
-  hasBindings?: boolean;
+  hasBindings?: boolean;                           //元素有绑定 也就是说 元素有 V- @ ： 为开头的属性
 
   text?: string;                                         // 文本内容
-  attrs?: Array<{ name: string; value: string }>;       // 这是什么 需要真实渲染的数据吗?
-  props?: Array<{ name: string; value: string }>;
+  attrs?: Array<{ name: string; value: string }>;       // 这是不必更新的属性，
+  props?: Array<{ name: string; value: string }>;      // 这是必须更新的属性，可相应额属性，  和attrs合起来  = 所有属性attrsList，  那些是必须更新的属性呢？在src/platforms/web/util/attrs.js  mustUseProp 定义好的
   plain?: boolean;
   pre?: true;
   ns?: string;
@@ -98,12 +98,12 @@ declare type ASTElement = {　　　　　　　　　　　　　　　　　�
   ifProcessed?: boolean;
   elseif?: string;
   else?: true;
-  ifConditions?: ASTIfConditions;
+  ifConditions?: ASTIfConditions;                 // if表达式容器 {exp："isShow === 1"， block: ASTElement}
 
-  for?: string;
+  for?: string;                                 // for     v-for="item in SexList " 对应的属性   SexList
   forProcessed?: boolean;
   key?: string;
-  alias?: string;
+  alias?: string;                                // 对应的  上面的 item
   iterator1?: string;
   iterator2?: string;
 

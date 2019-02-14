@@ -119,7 +119,7 @@ export function createPatchFunction (backend) {
       setScope(vnode)
 
       /* istanbul ignore if */
-      if (__WEEX__) {
+      if (__WEEX__) {                                                 // 难道用webpack 定义的全局变量，
         // in Weex, the default insertion order is parent-first.
         // List items can be optimized to use children-first insertion
         // with append="tree".
@@ -556,7 +556,7 @@ export function createPatchFunction (backend) {
       isInitialPatch = true
       createElm(vnode, insertedVnodeQueue, parentElm, refElm)
     } else {
-      const isRealElement = isDef(oldVnode.nodeType)
+      const isRealElement = isDef(oldVnode.nodeType)          //通过查看nodeType属性查看是不是真的HTML Element
       if (!isRealElement && sameVnode(oldVnode, vnode)) {
         // patch existing root node
         patchVnode(oldVnode, vnode, insertedVnodeQueue, removeOnly)
@@ -590,10 +590,10 @@ export function createPatchFunction (backend) {
         // replacing existing element
         elm = oldVnode.elm
         parent = nodeOps.parentNode(elm)
-        createElm(vnode, insertedVnodeQueue, parent, nodeOps.nextSibling(elm))
+        createElm(vnode, insertedVnodeQueue, parent, nodeOps.nextSibling(elm))          // 创建的元素直接就插入到父元素中了。
 
         if (vnode.parent) {
-          // component root element replaced.
+          // component root element replaced.                         把组件的跟元素去掉，  elm上移。
           // update parent placeholder node element, recursively
           let ancestor = vnode.parent
           while (ancestor) {

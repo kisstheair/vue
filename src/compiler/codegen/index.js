@@ -11,7 +11,7 @@ let transforms
 let dataGenFns
 let platformDirectives
 let isPlatformReservedTag
-let staticRenderFns
+let staticRenderFns                          // 静态执行函数，不需要数据变动之后重新渲染的
 let onceCount
 let currentOptions
 
@@ -65,7 +65,7 @@ function genElement (el: ASTElement): string {
 
       const children = el.inlineTemplate ? null : genChildren(el, true)
       code = `_c('${el.tag}'${
-        data ? `,${data}` : '' // data
+        data ? `,${data}` : '' // data　　　　　　　　　　　　　　　　　　　　　　这里才是调用 ＿C　 createElement 方法，返回的是 一个VNode
       }${
         children ? `,${children}` : '' // children
       })`
@@ -74,7 +74,7 @@ function genElement (el: ASTElement): string {
     for (let i = 0; i < transforms.length; i++) {
       code = transforms[i](el, code)
     }
-    return code
+    return code   // VNode
   }
 }
 
@@ -106,7 +106,7 @@ function genOnce (el: ASTElement): string {
       )
       return genElement(el)
     }
-    return `_o(${genElement(el)},${onceCount++}${key ? `,${key}` : ``})`
+    return `_o(${genElement(el)},${onceCount++}${key ? `,${key}` : ``})`         //_o只是对生成的Vnode进行标记一下，
   } else {
     return genStatic(el)
   }
@@ -123,14 +123,14 @@ function genIfConditions (conditions: ASTIfConditions): string {
   }
 
   var condition = conditions.shift()
-  if (condition.exp) {
+  if (condition.exp) {                             //ast --vdom  如果表达式不为空，  vdom节点需要依赖表达式而存在。
     return `(${condition.exp})?${genTernaryExp(condition.block)}:${genIfConditions(conditions)}`
   } else {
     return `${genTernaryExp(condition.block)}`
   }
 
   // v-if with v-once should generate code like (a)?_m(0):_m(1)
-  function genTernaryExp (el) {
+  function genTernaryExp (el) {                                      // 这里直接去构建一个普通的元素就好了，el.ifProcessed  = true ，再次的时候会忽略 el.if属性。
     return el.once ? genOnce(el) : genElement(el)
   }
 }
@@ -141,10 +141,11 @@ function genFor (el: any): string {
   const iterator1 = el.iterator1 ? `,${el.iterator1}` : ''
   const iterator2 = el.iterator2 ? `,${el.iterator2}` : ''
   el.forProcessed = true // avoid recursion
-  return `_l((${exp}),` +
+  const temp =  `_l((${exp}),` +
     `function(${alias}${iterator1}${iterator2}){` +
       `return ${genElement(el)}` +
     '})'
+	return temp;
 }
 
 function genData (el: ASTElement): string {

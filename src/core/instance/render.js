@@ -122,7 +122,7 @@ export function renderMixin (Vue: Class<Component>) {
   Vue.prototype._i = looseIndexOf
 
   // render static tree by index
-  Vue.prototype._m = function renderStatic (
+  Vue.prototype._m = function renderStatic (               //静态元素，　如果不在ｖ－ｆｏｒ中不需要重新
     index: number,
     isInFor?: boolean
   ): VNode | Array<VNode> {

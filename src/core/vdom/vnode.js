@@ -6,7 +6,7 @@ export default class VNode {
   children: ?Array<VNode>;
   text: string | void;
   elm: Node | void;                       //对应的html5元素
-  ns: string | void;
+  ns: string | void;                      // 命名空间， 针对xml的
   context: Component | void;            // rendered in this component's scope    节点执行的作用域，  虚拟节点 作用域应该在某个组件中，  一个组件包含多个VNode，  然后这个组件又在父组件中当做VNode
   functionalContext: Component | void;  // only for functional component root nodes  仅用于功能组件根节点
   key: string | number | void;
