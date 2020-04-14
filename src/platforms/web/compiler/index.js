@@ -15,12 +15,12 @@ export const baseOptions: CompilerOptions = {               //编译模板的基
   expectHTML: true,
   modules,
   staticKeys: genStaticKeys(modules),
-  directives,
-  isReservedTag,
-  isUnaryTag,
-  mustUseProp,
-  getTagNamespace,
-  isPreTag
+  directives,                               // 解析的时候， 平台可以有哪些指令？ v-html  v-model   v-text
+  isReservedTag,                           //  是不是保留标签     web的保留标签是 html,body,base,head,link,meta,style,title，，，所有html标签，  weex的标签 只有div,img,image,input,switch,indicator,list,scroller,cell,template,text,slider,image这么多
+  isUnaryTag,                              //  是不是一元标签，自关闭 没有结束符号  web 有area,base,br,col,embed,frame,hr,img                    weex 没有
+  mustUseProp,                             // 那些标签必须拥有属性， selected 必须拥有option   input 必须拥有value
+  getTagNamespace,                         // 获取标签的命名空间，  web 只有svg  的命名空间是svg ，                                              weex没有
+  isPreTag                                 // 是不是 <pre></pre>   这个标签
 }
 
 export function compile (

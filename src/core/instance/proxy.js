@@ -61,8 +61,8 @@ if (process.env.NODE_ENV !== 'production') {
     }
   }
 
-  initProxy = function initProxy (vm) {
-    if (hasProxy) {
+  initProxy = function initProxy (vm) {                                        // 直接访问vue实例  vm  ，还是通过一层代理_renderProxy  间接访问vm
+    if (hasProxy) {                                                            // 为什么要做代理呢？    就为了增加一层提示，
       // determine which proxy handler to use
       const options = vm.$options
       const handlers = options.render && options.render._withStripped

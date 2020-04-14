@@ -43,9 +43,9 @@ export default class Dep {
 }
 
 // the current target watcher being evaluated.
-// this is globally unique because there could be only one
+// this is globally unique because there could be only one         这是全球唯一的，因为可能只有一个watcher 被，，，  在任何时候
 // watcher being evaluated at any time.
-Dep.target = null
+Dep.target = null                                           //这个式函数属性，只能在函数上使用，不能在实例上使用--------------，函数导入到其他模块使用，但是还是这个函数本身， 所以  这个 target属性是单例的   全局唯一。
 const targetStack = []
 
 export function pushTarget (_target: Watcher) {

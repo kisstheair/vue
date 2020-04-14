@@ -85,7 +85,7 @@ export function createPatchFunction (backend) {
   }
 
   let inPre = 0
-  function createElm (vnode, insertedVnodeQueue, parentElm, refElm, nested) {
+  function createElm (vnode, insertedVnodeQueue, parentElm, refElm, nested) {         // 给出了 父元素 ， Vnode树，----------把Vode树变为Dom树挂载在父元素的位置， 考虑性能要求应该是先变为DOM树， 最后一起挂到父位置上面
     vnode.isRootInsert = !nested // for transition enter check
     if (createComponent(vnode, insertedVnodeQueue, parentElm, refElm)) {
       return
@@ -113,7 +113,7 @@ export function createPatchFunction (backend) {
           )
         }
       }
-      vnode.elm = vnode.ns
+      vnode.elm = vnode.ns                                              // 先用根VNode---创建一个对应的根 HTMLElement
         ? nodeOps.createElementNS(vnode.ns, tag)
         : nodeOps.createElement(tag, vnode)                                                                  // 真正 vnode  转换为 node 的地方。
       setScope(vnode)
@@ -138,11 +138,11 @@ export function createPatchFunction (backend) {
           insert(parentElm, vnode.elm, refElm)
         }
       } else {
-        createChildren(vnode, children, insertedVnodeQueue)
+        createChildren(vnode, children, insertedVnodeQueue)                 // 有了 根VNode---》rootElement ----------可以把 所有的Vnode 变为DOM树 挂到rootElement上面
         if (isDef(data)) {
           invokeCreateHooks(vnode, insertedVnodeQueue)
         }
-        insert(parentElm, vnode.elm, refElm)
+        insert(parentElm, vnode.elm, refElm)                           //然后再把   rootElement上面的树  ---------插入到Document 中的DOM树上面------------   一次性完成挂载。
       }
 
       if (process.env.NODE_ENV !== 'production' && data && data.pre) {
@@ -155,7 +155,7 @@ export function createPatchFunction (backend) {
       vnode.elm = nodeOps.createTextNode(vnode.text)
       insert(parentElm, vnode.elm, refElm)
     }
-  }
+  }    //根据Vnode 创建一个html元素   并插入到指定的位置。（指定父元素， [兄弟元素]）   深度遍历， Vode树---》Dom树
 
   function createComponent (vnode, insertedVnodeQueue, parentElm, refElm) {
     let i = vnode.data

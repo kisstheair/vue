@@ -31,7 +31,7 @@ export function initMixin (Vue: Class<Component>) {
     }
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
-      initProxy(vm)                                   // 添加代理， 还是不太明白
+      initProxy(vm)                                   // 添加代理， vm._renderProxy = new Proxy(vm, handlers)，，，    为什么添加代理，就为了多一层提示，   这里还设定只有在开发模式的时候才添加代理
     } else {
       vm._renderProxy = vm
     }

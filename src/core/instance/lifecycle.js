@@ -74,21 +74,28 @@ export function lifecycleMixin (Vue: Class<Component>) {
     return vm
   }
 
+  /**
+   * vm.$el      DOM树
+   * vm._vnode   VNode树
+   * $el.__vue__  vm
+   * */
+
+
   Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
     const vm: Component = this
     if (vm._isMounted) {
       callHook(vm, 'beforeUpdate')
     }
-    const prevEl = vm.$el
-    const prevVnode = vm._vnode
+    const prevEl = vm.$el                      //之前的HTML元素
+    const prevVnode = vm._vnode                 //之前的vnode  虚拟dom
     const prevActiveInstance = activeInstance
-    activeInstance = vm
+    activeInstance = vm                              // 现在处理这个vm ，那么这个vm就是激活的实例
     vm._vnode = vnode
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
     if (!prevVnode) {
                                                                           // initial render   如果还没有 prevVnode 说明是首次渲染，直接创建真实DOM。
-      vm.$el = vm.__patch__(
+      vm.$el = vm.__patch__(                                             // init  和update 传入的参数可是不一样，   vm.$el 与  prevVnode
         vm.$el, vnode, hydrating, false /* removeOnly */,
         vm.$options._parentElm,
         vm.$options._refElm
@@ -100,9 +107,9 @@ export function lifecycleMixin (Vue: Class<Component>) {
     activeInstance = prevActiveInstance
     // update __vue__ reference
     if (prevEl) {
-      prevEl.__vue__ = null
+      prevEl.__vue__ = null                    // 解除引用
     }
-    if (vm.$el) {
+    if (vm.$el) {                            //生成新的html元素了，   html.__vue__ = vm     关联一下。
       vm.$el.__vue__ = vm
     }
     // if parent is an HOC, update its $el as well

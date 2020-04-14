@@ -2,7 +2,7 @@
 
 import { remove } from 'shared/util'
 
-export default {
+export default {                                 // 把 template 中的所有vnode 的 ref 属性  -----放到vm.$refs中    例如：ref = table   vm.$refs= [table:vnode.elm]      ref的值 对应的是这个vnode的 Element
   create (_: any, vnode: VNodeWithData) {
     registerRef(vnode)
   },

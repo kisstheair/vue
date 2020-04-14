@@ -18,8 +18,8 @@ let uid = 0
  * and fires callback when the expression value changes.
  * This is used for both the $watch() api and directives.
  */
-export default class Watcher {                                                   // 有2中类型    new Watcher （vm，ecp， cb()）       当set触发响应的时候，先执行exp获取newValue 判断==oldValue 不等的情况擦会cb()
-  vm: Component;                                                                  //               new Watcher （vm，fun()， cb()）                        先执行fun() 在执行cb()    但是必须有一个条件fun()中必须触发了get， 否则不会被Dep收集
+export default class Watcher {                            // 有2中类型    new Watcher （vm，ecp， cb()）        exp可是是a   a.b  a.b.c  那么只getvm的某个数据，所以只对某个数据响应式    -------------- cb是 判断==oldValue 不等的情况擦会cb()
+  vm: Component;                                         //               new Watcher （vm，fun()， cb()）      fun() 触发vm的get，  也就是vm的 data  都会进行Dep收集，， 所以针对vm整个data响应
   expression: string;
   cb: Function;
   id: number;
@@ -68,7 +68,7 @@ export default class Watcher {                                                  
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
-      this.getter = parsePath(expOrFn)                              //  expOrFn可能是a.b.c    返回的是一个可以深层次查找属性的函数
+      this.getter = parsePath(expOrFn)                              //  expOrFn可能是a.b.c    返回的是一个可以深层次查找属性的函数       如：expOrFn：a  this.getter = (obj)=》{retuen obj.a}
       if (!this.getter) {
         this.getter = function () {}
         process.env.NODE_ENV !== 'production' && warn(

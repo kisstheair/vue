@@ -1,5 +1,13 @@
 /* @flow */
 
+
+/**
+ *  既然继承就要有主次之分，就要创建一个新的sub, sub ，获取father的功能，且不会影响father的属性，
+ *  	所以要创建一个空函数代表sub，
+ *
+ * */
+
+
 import config from '../config'
 import { warn, mergeOptions } from '../util/index'
 
@@ -33,11 +41,11 @@ export function initExtend (Vue: GlobalAPI) {
         )
       }
     }
-    const Sub = function VueComponent (options) {
+    const Sub = function VueComponent (options) {                    //创建一个空函数， 照搬Vue上面的属性，   主要就是合并继承的option   extendOptions，  初始化的时候调用自己的init；
       this._init(options)
     }
-    Sub.prototype = Object.create(Super.prototype)
-    Sub.prototype.constructor = Sub
+    Sub.prototype = Object.create(Super.prototype)              //继承所有功能，
+    Sub.prototype.constructor = Sub                            // 构造器指向自己
     Sub.cid = cid++
     Sub.options = mergeOptions(
       Super.options,

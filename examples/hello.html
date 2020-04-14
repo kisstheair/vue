@@ -28,6 +28,7 @@
             at <span class="date">{{ record.commit.author.date | formatDate }}</span>
         </li>
     </ul>
+    {{temp}}
 </div>
 
 
@@ -42,10 +43,12 @@
 			currentBranch: 'master',
 			commits: null,
 			isShow: 1,
+			temp: 1,
 		},
 
 		created: function () {
 			this.getUrlData()
+			this.setTemp()
 		},
 
 		watch: {
@@ -72,6 +75,18 @@
 					console.log(self.commits[0].html_url)
 				}
 				xhr.send()
+			},
+            setTemp:function () {
+				let self = this;
+				change();
+
+                setTimeout(function () {
+					change()
+				},5000)
+
+                function change() {
+					self.temp = new Date().getTime()
+				}
 			}
 		}
 	})

@@ -11,7 +11,7 @@ export default class VNode {
   functionalContext: Component | void;  // only for functional component root nodes  仅用于功能组件根节点
   key: string | number | void;
   componentOptions: VNodeComponentOptions | void;
-  child: Component | void; // component instance
+  child: Component | void; // component instance           //child代表的是组件， children代表的是普通【vnode】数组，    有多个子组件怎么办么？
   parent: VNode | void; // component placeholder node
   raw: boolean; // contains raw HTML? (server only)
   isStatic: boolean; // hoisted static node

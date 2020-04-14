@@ -31,7 +31,7 @@ export function generate (　　　　　　　　　　　　　　　　　　
   warn = options.warn || baseWarn
   transforms = pluckModuleFunction(options.modules, 'transformCode')
   dataGenFns = pluckModuleFunction(options.modules, 'genData')
-  platformDirectives = options.directives || {}
+  platformDirectives = options.directives || {}                            // 开始的时候平台指令已经放到 Vue.options.directives  ，实例化的时候可能也会添加自定义的指令，  这里是二者的合并。
   isPlatformReservedTag = options.isReservedTag || no
   const code = ast ? genElement(ast) : '_c("div")'
   staticRenderFns = prevStaticRenderFns

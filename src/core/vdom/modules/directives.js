@@ -4,7 +4,7 @@ import { resolveAsset } from 'core/util/options'
 import { mergeVNodeHook } from 'core/vdom/helpers/index'
 import { emptyNode } from 'core/vdom/patch'
 
-export default {
+export default {                                       // 这里是指令执行的地方，  当一个Vnode 创建，更新，销毁的时候，  会看看自己有没有指令，  如果有指令到这里来操作一把。
   create: updateDirectives,
   update: updateDirectives,
   destroy: function unbindDirectives (vnode: VNodeWithData) {
