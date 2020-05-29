@@ -84,7 +84,7 @@ function decodeAttr (value, shouldDecodeNewlines) {
 
 export function parseHTML (html, options) {
   const stack = []
-  const expectHTML = options.expectHTML
+  const expectHTML = options.expectHTML              //期望html ，只有在非web平台才为false
   const isUnaryTag = options.isUnaryTag || no
   let index = 0
   let last, lastTag
@@ -196,7 +196,7 @@ export function parseHTML (html, options) {
   // Clean up any remaining tags
   parseEndTag()
 
-  function advance (n) {
+  function advance (n) {            //提前做什么，    也就是把前面的截掉。
     index += n
     html = html.substring(n)
   }

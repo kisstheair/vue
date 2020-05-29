@@ -6412,7 +6412,7 @@ var canBeLeftOpenTag = makeMap(
 );
 
 // HTML5 tags https://html.spec.whatwg.org/multipage/indices.html#elements-3
-// Phrasing Content https://html.spec.whatwg.org/multipage/dom.html#phrasing-content           不用解析的标签 比如 <h5>324</h5> 没有任何属性，直接copy就可以了 《body》。。。。
+// Phrasing Content https://html.spec.whatwg.org/multipage/dom.html#phrasing-content           不是短语标签，具体怎么样还不知道。。。
 var isNonPhrasingTag = makeMap(
   'address,article,aside,base,blockquote,body,caption,col,colgroup,dd,' +
   'details,dialog,div,dl,dt,fieldset,figcaption,figure,footer,form,' +
@@ -6433,6 +6433,7 @@ var isNonPhrasingTag = makeMap(
  * http://erik.eae.net/simplehtmlparser/simplehtmlparser.js
  */
 
+// Regular Expressions for parsing tags and attributes
 var singleAttrIdentifier = /([^\s"'<>/=]+)/;                  // 单属性标识符   除了（空白符，引号，<> / =）
 var singleAttrAssign = /(?:=)/;                               //单属性赋值号    =
 var singleAttrValues = [
@@ -6504,7 +6505,7 @@ function decodeAttr (value, shouldDecodeNewlines) {
 
 function parseHTML (html, options) {
   var stack = [];
-  var expectHTML = options.expectHTML;
+  var expectHTML = options.expectHTML;              //期望html ，只有在非web平台才为false
   var isUnaryTag$$1 = options.isUnaryTag || no;
   var index = 0;
   var last, lastTag;
@@ -6616,7 +6617,7 @@ function parseHTML (html, options) {
   // Clean up any remaining tags
   parseEndTag();
 
-  function advance (n) {
+  function advance (n) {            //提前做什么，    也就是把前面的截掉。
     index += n;
     html = html.substring(n);
   }

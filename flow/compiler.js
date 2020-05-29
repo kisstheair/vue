@@ -1,6 +1,6 @@
 declare type CompilerOptions = {
   warn?: Function; // allow customizing warning in different environments; e.g. node
-  expectHTML?: boolean; // only false for non-web builds
+  expectHTML?: boolean; // only false for non-web builds                              仅对非web生成为false
   modules?: Array<ModuleOptions>; // platform specific modules; e.g. style; class
   staticKeys?: string; // a list of AST properties to be considered static; for optimization
   directives?: { [key: string]: Function }; // platform specific directives

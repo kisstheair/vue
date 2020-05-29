@@ -1,6 +1,6 @@
 /* @flow */
 
-import { decode } from 'he'
+import { decode } from 'he'                     //HTML entity encoder/decoder written in JavaScript.  html实体页面的编码解码器，猜想作用是：把html 传输的过程中转为一定格式，然后再转过来
 import { parseHTML } from './html-parser'
 import { parseText } from './text-parser'
 import { parseFilters } from './filter-parser'
