@@ -19,7 +19,7 @@ import {
 
 export const dirRE = /^v-|^@|^:/
 export const forAliasRE = /(.*?)\s+(?:in|of)\s+(.*)/                           // 匹配for 循环的内容  item in sexlist
-export const forIteratorRE = /\((\{[^}]*\}|[^,]*),([^,]*)(?:,([^,]*))?\)/     // for 迭代器 (item ,index)
+export const forIteratorRE = /\((\{[^}]*\}|[^,]*),([^,]*)(?:,([^,]*))?\)/     // for 迭代器 (item ,index)        或者 ({} ,index)
 const bindRE = /^:|^v-bind:/
 const onRE = /^@|^v-on:/
 const argRE = /:(.*)$/
@@ -138,10 +138,10 @@ export function parse (
         processRef(element)
         processSlot(element)
         processComponent(element)                                     // 碰到是组件的怎么办，  加载上属性 例如 <svg-icon></svg-icon>   <div is="svgIcon"/>  element.component = "svgIcon"
-        for (let i = 0; i < transforms.length; i++) {
+        for (let i = 0; i < transforms.length; i++) {                // 转换， 把平台特殊的属性转换出来，例如class id style都是平台特有的属性，    那就把attrList中的属性转为  ASTElement 的 staticClass  classBinding。。。
           transforms[i](element, options)
         }
-        processAttrs(element)
+        processAttrs(element)                                  // process 处理，  这里是处理其他的属性。
       }
 
       function checkRootConstraints (el) {
@@ -163,7 +163,7 @@ export function parse (
         }
       }
 
-      // tree management
+      // tree management                                          上面的内容是处理一个节点， 下面的是组成一个树。
       if (!root) {
         root = element
         checkRootConstraints(root)
@@ -268,7 +268,7 @@ export function parse (
   return root
 }
 
-function processPre (el) {
+function processPre (el) {                                 //把 parsehtml解析出来的attr， 转换为 ASTElement的属性。
   if (getAndRemoveAttr(el, 'v-pre') != null) {
     el.pre = true
   }

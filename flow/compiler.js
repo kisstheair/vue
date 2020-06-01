@@ -80,32 +80,32 @@ declare type ASTElement = {　　　　　　　　　　　　　　　　　�
   attrs?: Array<{ name: string; value: string }>;       // 这是不必更新的属性，
   props?: Array<{ name: string; value: string }>;      // 这是必须更新的属性，可相应额属性，  和attrs合起来  = 所有属性attrsList，  那些是必须更新的属性呢？在src/platforms/web/util/attrs.js  mustUseProp 定义好的
   plain?: boolean;
-  pre?: true;
+  pre?: true;                                          //是否有 v-pre属性   或者 是pre元素
   ns?: string;
 
-  component?: string;
-  inlineTemplate?: true;
+  component?: string;                                // :is  属性的都解析为组件
+  inlineTemplate?: true;                            //  是否 有 inline-template属性
   transitionMode?: string | null;
-  slotName?: ?string;
-  slotTarget?: ?string;
-  slotScope?: ?string;
+  slotName?: ?string;                                //aaa                      <slot name="aaa">
+  slotTarget?: ?string;                              //header || "default"     <div  slot="header"></div
+  slotScope?: ?string;                               //bbb                     <template  solt="AAA" scope="bbb"><template>
   scopedSlots?: { [name: string]: ASTElement };
 
-  ref?: string;
-  refInFor?: boolean;
+  ref?: string;                                    //元素上面的ref引用，
+  refInFor?: boolean;                              //自己或者 父元素是否在 for循环中
 
   if?: string;                                      // if      v-if="isShow === 1" 对应的属性    isShow === 1
   ifProcessed?: boolean;
   elseif?: string;
   else?: true;
-  ifConditions?: ASTIfConditions;                 // if表达式容器 {exp："isShow === 1"， block: ASTElement}
+  ifConditions?: ASTIfConditions;                 // if表达式容器 [{exp："isShow === 1"， block: ASTElement}]   else  else if 也放到 if条件的主元素上
 
-  for?: string;                                 // for     v-for="item in SexList " 对应的属性   SexList
+  for?: string;                                  // for   v-for="item in SexList " 对应的属性   SexList
   forProcessed?: boolean;
-  key?: string;
-  alias?: string;                                // 对应的  上面的 item
-  iterator1?: string;
-  iterator2?: string;
+  key?: string;                                  // 绑定的key值， ：key="index"
+  alias?: string;                                // 对应的 上面的 item           如果是这种形式  v-for="(sex,index ) in SexList "      那么 alias = sex          如果是这种形式  v-for="(sex,index, AAA )in SexList "      那么 alias = sex
+  iterator1?: string;                                                                                                                  // index                                                                               // index
+  iterator2?: string;                                                                                                                                                                                                         // AAA
 
   staticClass?: string;
   classBinding?: string;
@@ -119,7 +119,7 @@ declare type ASTElement = {　　　　　　　　　　　　　　　　　�
 
   directives?: Array<ASTDirective>;
 
-  forbidden?: true;
+  forbidden?: true;                          //是不是禁止解析的元素， style  script
   once?: true;
   onceProcessed?: boolean;
   wrapData?: (code: string) => string;

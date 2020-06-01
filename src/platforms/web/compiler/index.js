@@ -12,7 +12,7 @@ import { isUnaryTag } from './util'
 const cache: { [key: string]: CompiledFunctionResult } = Object.create(null)
 
 export const baseOptions: CompilerOptions = {               //编译模板的基础参数
-  expectHTML: true,
+  expectHTML: true,                        //期望html ，只有在非web平台才为false
   modules,
   staticKeys: genStaticKeys(modules),
   directives,                               // 解析的时候， 平台可以有哪些指令？ v-html  v-model   v-text
